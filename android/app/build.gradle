@@ -130,9 +130,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.aar'])
 
 
-    implementation 'com.github.felHR85:UsbSerial:4.5.2'
-  //  implementation("com.github.felHR85:UsbSerial:6.1.0") // 西石大
-
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${build_versions.kotlin}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${build_versions.kotlin}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${build_versions.kotlin}")
@@ -140,10 +137,4 @@ dependencies {
     configurations.all { resolutionStrategy { force "org.jetbrains.kotlin:kotlin-stdlib:${build_versions.kotlin}" } }
     configurations.all { resolutionStrategy { force "org.jetbrains.kotlin:kotlin-stdlib-common:${build_versions.kotlin}" } }
 
-//    implementation("com.tencent.map.geolocation:TencentLocationSdk-openplatform:${build_versions.location_sdk}")
- //   implementation("com.tencent.map:tencent-map-vector-sdk:${build_versions.map_sdk}")
-//    implementation("androidx.multidex:multidex:${build_versions.multidex}")
-
- //   implementation("com.github.7moor-tech:7moor_visitorIm_sdkUiAx:${build_versions.im_moor}")
-    // implementation files('libs/iscanuserapi.jar')
 }

@@ -323,6 +323,7 @@ mixin ListMoreSearchPageStateMixin<T extends BasePage,
 }
 
 abstract class BaseListMoreModel<T> extends ViewStateRefreshListModel<T> {
+  BaseListMoreModel({requestParam}) : super(requestParam: requestParam);
   //搜索关键字
   String _searchKeyword = '';
 
@@ -365,8 +366,6 @@ abstract class BaseListMoreModel<T> extends ViewStateRefreshListModel<T> {
   void setSearchKey(String key) {
     _searchKeyword = key;
   }
-
-  BaseListMoreModel({requestParam}) : super(requestParam: requestParam);
 
   ///设置搜索关键字
   setKeyWord(String keyword, {isFromScan = false}) async {

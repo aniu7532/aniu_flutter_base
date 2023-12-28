@@ -16,7 +16,7 @@ class BaseSelectAreaItem extends StatelessWidget {
     this.contentPadding =
         const EdgeInsets.symmetric(vertical: AppConst.EDITOR_ITEM_TOP_BOTTOM),
     this.padding =
-        const EdgeInsets.symmetric(horizontal: AppConst.EDITOR_ITEM_INDENT),
+        const EdgeInsets.symmetric(horizontal: AppConst.editorItemIndent),
     this.showDivider = true,
   }) : super(key: key);
 

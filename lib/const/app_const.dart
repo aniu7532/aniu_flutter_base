@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
+///
+/// app全局常量
+///
 class AppConst {
   ///
   /// 设备密码
@@ -16,7 +19,7 @@ class AppConst {
   static const double pageWidth = 1080; //高度
 
   static const double EDITOR_ITEM_HEIGHT = 44; //高度
-  static const double EDITOR_ITEM_INDENT = 20; //左右缩进
+  static const double editorItemIndent = 20; //左右缩进
   static const double EDITOR_ITEM_TOP_BOTTOM = 16; //上下距离
 
   /// 时间显示的分隔符

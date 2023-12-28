@@ -1,11 +1,9 @@
 package plugins;
 import androidx.annotation.NonNull;
 
-import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
-import kotlin.Result;
 
 
 public class UsbPlugin implements FlutterPlugin {
@@ -24,11 +22,8 @@ public class UsbPlugin implements FlutterPlugin {
         // call.method 回调中的方法名，要和在 Flutter 中定义的保持一致
         switch (methodCall.method) {
             case "install":
-
-
                 break;
             case "other":
-
                 break;
             default:
                 // 如果回调异常，则设置相关信息

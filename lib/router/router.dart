@@ -6,6 +6,8 @@ import 'package:musico/pages/home/setting/tab_setting_page.dart';
 import 'package:musico/pages/index/index_page.dart';
 import 'package:musico/pages/splash_page.dart';
 import 'package:musico/utils/app_crash_util.dart';
+import 'package:musico/widgets/file_select/image_preview_page.dart';
+import 'package:musico/widgets/file_select/video_preview_page.dart';
 
 class AppRouteObserver extends AutoRouterObserver {
   Future<void> _sendScreenView(Route? route, Route? previousRoute) async {
@@ -51,6 +53,12 @@ class AppRouteObserver extends AutoRouterObserver {
 
     //扫码页面
     AutoRoute(path: 'scan_page', page: ScanPage),
+
+    //视频预览页面
+    AutoRoute(path: 'video_preview_page', page: VideoPreviewPage),
+
+    //图片预览页面
+    AutoRoute(path: 'image_preView_page', page: ImagePreViewPage),
   ],
 )
 class $AppRouter {}

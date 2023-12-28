@@ -12,9 +12,9 @@ class OptionList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['value'] = this.value;
-    data['label'] = this.label;
+    final data = <String, dynamic>{};
+    data['value'] = value;
+    data['label'] = label;
     return data;
   }
 

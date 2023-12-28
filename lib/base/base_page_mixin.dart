@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:musico/base/base_page.dart';
 import 'package:musico/base/provider_widget.dart';
 import 'package:musico/base/view_state_model.dart';
 import 'package:musico/base/view_state_widget.dart';
-import 'package:musico/const/app_const.dart';
 import 'package:musico/widgets/zz_app_bar.dart';
 import 'package:musico/widgets/zz_scaffold.dart';
 import 'package:musico/widgets/zz_title_widget.dart';
@@ -25,7 +23,7 @@ mixin BasePageMixin<T extends BasePage, M extends ViewStateModel>
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: willPop,
-      child: needRefreshAll()
+      child: needNotifyAll()
           ? ProviderWidget<M>(
               model: model,
               onModelReady: (model) {
@@ -33,14 +31,17 @@ mixin BasePageMixin<T extends BasePage, M extends ViewStateModel>
                 model.initData();
               },
               builder: (context, model, child) {
-                return _getRealW();
+                return buildRoot();
               },
             )
-          : _getRealW(),
+          : buildRoot(),
     );
   }
 
-  Widget _getRealW() {
+  ///
+  /// 根布局
+  ///
+  Widget buildRoot() {
     return buildContainerWidget() ??
         ZzScaffold(
           appBar: buildAppBar() ??
@@ -72,7 +73,7 @@ mixin BasePageMixin<T extends BasePage, M extends ViewStateModel>
 
   ///重载，不需要全局刷新
   @protected
-  bool needRefreshAll() {
+  bool needNotifyAll() {
     return true;
   }
 
@@ -90,7 +91,7 @@ mixin BasePageMixin<T extends BasePage, M extends ViewStateModel>
     return [];
   }
 
-  //主要内容
+  ///主要内容
   Widget buildContent() {
     ///异常状态显示
     if (model.needStateControl &&
@@ -115,24 +116,31 @@ mixin BasePageMixin<T extends BasePage, M extends ViewStateModel>
     return result;
   }
 
-  ///生成显示页面  需要用户实现
-  @protected
-  Widget buildContentWidget();
-
-  Widget? buildHeaderWidget() {
-    return null;
-  }
-
   ///防止被 暂无数据页面替换
+  ///顶级头部组件
   Widget buildTopHeaderWidget() {
     return const SizedBox.shrink();
   }
 
   ///防止被 暂无数据页面替换
+  ///顶级底部组件
   Widget buildBottomWidget() {
     return const SizedBox.shrink();
   }
 
+  ///生成显示页面  需要用户实现
+  @protected
+  Widget buildContentWidget();
+
+  ///
+  /// 需要
+  Widget? buildHeaderWidget() {
+    return null;
+  }
+
+  ///
+  /// 重写整个root
+  ///
   @protected
   Widget? buildContainerWidget() {
     return null;

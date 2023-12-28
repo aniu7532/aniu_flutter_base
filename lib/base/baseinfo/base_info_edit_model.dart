@@ -13,7 +13,6 @@ enum OperateType {
   copy,
   getOne,
   newCode,
-  justDoIt, // 做 ‘当前进入页面’ 的 操作  例如 进入收款单 就是 做 收款 操作
 }
 
 enum BaseInfoType {

@@ -2,20 +2,20 @@ import 'dart:async';
 
 import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
+import 'package:musico/app/myapp.dart';
+import 'package:musico/base/provider_widget.dart';
+import 'package:musico/const/app_data.dart';
+import 'package:musico/eventbus/pick_file_event.dart';
+import 'package:musico/router/router.gr.dart';
+import 'package:musico/utils/toast_util.dart';
+import 'package:musico/widgets/bottomsheet/file_pick_bottom_sheet.dart';
+import 'package:musico/widgets/draganddrop/grid_drag/sort_grid_drag.dart';
+import 'package:musico/widgets/file_select/file_bean.dart';
+import 'package:musico/widgets/file_select/file_state.dart';
+import 'package:musico/widgets/file_select/pick_file_item.dart';
+import 'package:musico/widgets/file_select/provider/pick_image_video_model.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import 'package:wechat_camera_picker/wechat_camera_picker.dart';
-import 'package:zzerp/app/myapp.dart';
-import 'package:zzerp/base/provider_widget.dart';
-import 'package:zzerp/const/app_data.dart';
-import 'package:zzerp/eventbus/pick_file_event.dart';
-import 'package:zzerp/router/router.gr.dart';
-import 'package:zzerp/utils/toast_util.dart';
-import 'package:zzerp/widgets/bottomsheet/file_pick_bottom_sheet.dart';
-import 'package:zzerp/widgets/draganddrop/grid_drag/sort_grid_drag.dart';
-import 'package:zzerp/widgets/file_select/file_bean.dart';
-import 'package:zzerp/widgets/file_select/file_state.dart';
-import 'package:zzerp/widgets/file_select/pick_file_item.dart';
-import 'package:zzerp/widgets/file_select/provider/pick_image_video_model.dart';
 
 typedef OnFileSelectCallBack = Function(List<FileBean> files);
 
@@ -28,6 +28,7 @@ class PickImageVideoWidget extends StatefulWidget {
     this.isImageOnly = false,
     this.canPreviewVideo = false,
     this.canPreviewImage = false,
+    this.uploadAfterChoose = false,
     this.enable = true,
     this.maxImageLength = 12,
     this.onFileCallBack,
@@ -41,6 +42,7 @@ class PickImageVideoWidget extends StatefulWidget {
     this.isImageOnly = false,
     this.canPreviewVideo = false,
     this.canPreviewImage = false,
+    this.uploadAfterChoose = false,
     this.enable = true,
     this.maxImageLength = 1,
     this.onFileCallBack,
@@ -54,6 +56,7 @@ class PickImageVideoWidget extends StatefulWidget {
     this.isImageOnly = false,
     this.canPreviewVideo = false,
     this.canPreviewImage = false,
+    this.uploadAfterChoose = false,
     this.enable = true,
     this.maxImageLength = 0,
     this.onFileCallBack,
@@ -67,6 +70,7 @@ class PickImageVideoWidget extends StatefulWidget {
     this.isImageOnly = true,
     this.canPreviewVideo = false,
     this.canPreviewImage = false,
+    this.uploadAfterChoose = false,
     this.enable = true,
     this.maxImageLength = 12,
     this.onFileCallBack,
@@ -89,6 +93,9 @@ class PickImageVideoWidget extends StatefulWidget {
 
   ///是否可编辑
   final bool enable;
+
+  ///选择后是否上传
+  final bool uploadAfterChoose;
 
   final int maxImageLength;
 
@@ -196,13 +203,22 @@ class _PickImageVideoWidgetState extends State<PickImageVideoWidget> {
                     MyToast.showError('视频不能超过20M');
                     return;
                   }
-                  final list = await model.uploadFileOnly([file.path]);
-                  if (list == null) {
+
+                  List<FileBean>? list = [];
+                  if (widget.uploadAfterChoose) {
+                    list = await model.uploadFileOnly([file.path]);
+                  } else {
+                    final fileBean = FileBean.fromEmpty();
+                    fileBean.preUrl = file.path;
+                    list = [fileBean];
+                  }
+
+                  if (list == null || list.length == 0) {
                     model.videoState = FileState.finish;
                     return;
                   }
-                  model.fileList[0] =
-                      FileBean.fromJson(list[0].toJson(), isImage: false);
+                  model.fileList
+                      .add(FileBean.fromJson(list[0].toJson(), isImage: false));
                   model.videoState = FileState.finish;
                   onFileListChange();
                 }
@@ -259,7 +275,22 @@ class _PickImageVideoWidgetState extends State<PickImageVideoWidget> {
               model.state = FileState.loading;
               final originFile = await pickList.first.originFile;
               if (originFile != null) {
-                await model.uploadFileOnly([originFile.path]);
+                List<FileBean>? list = [];
+                if (widget.uploadAfterChoose) {
+                  list = await model.uploadFileOnly([originFile.path]);
+                } else {
+                  final fileBean = FileBean.fromEmpty();
+                  fileBean.preUrl = originFile.path;
+                  list = [fileBean];
+                }
+
+                if (list == null || list.length == 0) {
+                  model.videoState = FileState.finish;
+                  return;
+                }
+                model.fileList
+                    .add(FileBean.fromJson(list[0].toJson(), isImage: false));
+
                 model.state = FileState.finish;
                 onFileListChange();
               }
@@ -332,10 +363,18 @@ class _PickImageVideoWidgetState extends State<PickImageVideoWidget> {
                     fList.add(file.path);
                   }
                 }
-                final list = await model.uploadFileOnly(
-                  fList,
-                  isImage: true,
-                );
+
+                List<FileBean>? list = [];
+                if (widget.uploadAfterChoose) {
+                  list = await model.uploadFileOnly(fList);
+                } else {
+                  fList.forEach((element) {
+                    final fileBean = FileBean.fromEmpty();
+                    fileBean.preUrl = element;
+                    list?.add(fileBean);
+                  });
+                }
+
                 if (list == null) {
                   model.state = FileState.finish;
                   return;

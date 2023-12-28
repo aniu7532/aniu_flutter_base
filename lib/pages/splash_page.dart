@@ -10,6 +10,7 @@ import 'package:musico/gen/assets.gen.dart';
 import 'package:musico/gen/colors.gen.dart';
 import 'package:musico/router/router.gr.dart';
 import 'package:musico/utils/store_util.dart';
+import 'package:screen_protector/screen_protector.dart';
 
 ///启动页
 class SplashPage extends StatefulWidget {
@@ -114,6 +115,8 @@ class _SplashPageState extends State<SplashPage>
 
   ///资源模式判断
   Future<void> checkUserMode() async {
+    await ScreenProtector.preventScreenshotOn();
+
     Future.delayed(const Duration(seconds: splashTime), () async {
       ///通过判断是否有基础配置 进行页面跳转
       final configBeanStr = await storeUtil.fetchValue(AppConst.keyConfig);
@@ -121,7 +124,6 @@ class _SplashPageState extends State<SplashPage>
         /// 配置微为空进入配置页面
         await appRouter.replace(IndexRoute());
       } else {
-
         /// 配置微不为空进入首页
         await appRouter.replace(IndexRoute());
       }

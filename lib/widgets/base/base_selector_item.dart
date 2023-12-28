@@ -34,7 +34,7 @@ class BaseSelectorItem<T> extends StatefulWidget {
     this.contentPadding =
         const EdgeInsets.symmetric(vertical: AppConst.EDITOR_ITEM_TOP_BOTTOM),
     this.padding =
-        const EdgeInsets.symmetric(horizontal: AppConst.EDITOR_ITEM_INDENT),
+        const EdgeInsets.symmetric(horizontal: AppConst.editorItemIndent),
   }) : super(key: key);
 
   final ValueChanged? onChangedCallback;
