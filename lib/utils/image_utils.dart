@@ -1,9 +1,9 @@
-import 'package:musico/const/app_common.dart';
-import 'package:musico/gen/assets.gen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:musico/const/app_common.dart';
+import 'package:musico/gen/assets.gen.dart';
 
 class ImageUtils {
   ///加载网络图片
@@ -49,6 +49,7 @@ class ImageUtils {
     BoxFit fit = BoxFit.cover,
     bool useFullPath = false,
     int errorType = 1,
+    final BorderRadiusGeometry? borderRadius,
   }) {
     final errorWidget = Assets.images.noData.defaultNoTrack;
 
@@ -59,7 +60,7 @@ class ImageUtils {
           width: width,
           height: height,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(r),
+            borderRadius: borderRadius ?? BorderRadius.circular(r),
             image: DecorationImage(image: image, fit: BoxFit.cover),
             // boxShadow: [
             //   BoxShadow(
@@ -83,7 +84,7 @@ class ImageUtils {
       ) {
         return errorWidget.image(width: width, height: height, fit: fit);
       },
-      fadeInDuration: const Duration(milliseconds: 100),
+      fadeInDuration: const Duration(milliseconds: 10),
     );
   }
 

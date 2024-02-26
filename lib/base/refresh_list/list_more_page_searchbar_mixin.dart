@@ -308,6 +308,7 @@ mixin ListMoreSearchPageStateMixin<T extends BasePage,
             : (getItemDivider() ?? dividerList1);*/
         return const SizedBox.shrink();
       },
+      controller: model.scrollController,
     );
   }
 

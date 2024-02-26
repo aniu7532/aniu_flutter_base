@@ -1,4 +1,5 @@
 import 'package:flustars/flustars.dart';
+import 'package:flutter/material.dart';
 import 'package:musico/base/view_state.dart';
 import 'package:musico/base/view_state_model.dart';
 
@@ -11,6 +12,7 @@ abstract class ViewStateListModel<T> extends ViewStateModel {
 
   /// 页面数据
   List<T> list = [];
+  ScrollController? scrollController;
 
   /// 第一次进入页面loading skeleton
   @override
@@ -27,6 +29,7 @@ abstract class ViewStateListModel<T> extends ViewStateModel {
   refresh({bool init = false}) async {
     try {
       final data = await loadListData(0);
+
       if (data == null || data.isEmpty) {
         if (viewState != ViewState.error) setEmpty();
       } else {
@@ -38,6 +41,7 @@ abstract class ViewStateListModel<T> extends ViewStateModel {
           notifyListeners();
         }
       }
+
       return true;
     } catch (e, s) {
       handleCatch(e, s);

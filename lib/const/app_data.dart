@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 
@@ -25,6 +27,9 @@ class AppData {
 
   ///Fts地址
   static String? ftsPath = '';
+
+  ///hive path
+  static String? hiveDirectoryPath;
 
   void xx() {
     Color(0xffcdd0d5);

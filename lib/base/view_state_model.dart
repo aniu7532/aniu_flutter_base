@@ -22,7 +22,7 @@ class ViewStateModel with ChangeNotifier, ApiMixin {
   /// 当前的页面状态,默认为busy,可在viewModel的构造方法中指定;
   ViewState _viewState = ViewState.idle;
 
-  ///参数
+  ///参数3
   Map<String, dynamic>? requestParam;
 
   ///是否修改过数据

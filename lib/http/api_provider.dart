@@ -55,7 +55,7 @@ class ApiModel {
     final connectivityResult = await Connectivity().checkConnectivity();
     if (connectivityResult == ConnectivityResult.none) {
       return APIResponse.error(
-        AppException.errorWithBean(BaseBean(content: '网络异常')),
+        AppException.errorWithBean(BaseBean(msg: '网络异常')),
       );
     }
     String url;
@@ -79,7 +79,10 @@ class ApiModel {
     try {
       final headers = {
         'Accept': 'application/json,text/plain,*/*',
-        'Content-Type': content,
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'X-Algolia-Application-Id': '695QAXGQ42',
+        'X-Algolia-Api-Key':
+            'ZmRiMWNjYjZmY2I0MzgwZWExMzhiZDgzYWY4ZDdhZjBiMDFhY2YyMDhmNWI4M2YzMDJkNDA2NTIxNmRhZDk5M2ZpbHRlcnM9cHJvdmlkZXJfaWRzJTNBMTA4MjUyODQrT1IrcHJvdmlkZXJfaWRzJTNBLTEmcmVzdHJpY3RJbmRpY2VzPWV4ZXJjaXNlc19wcm9kdWN0aW9uX3Vz',
       };
       final _appToken = await _tokenModel.fetchToken();
       if (_appToken != null) {
@@ -105,7 +108,7 @@ class ApiModel {
 
       if (response.statusCode == null) {
         return APIResponse.error(
-          AppException.errorWithBean(BaseBean(content: '网络异常')),
+          AppException.errorWithBean(BaseBean(msg: '网络异常')),
         );
       }
       if (kDebugMode && AppData.useResponseBodyLog) {
@@ -124,7 +127,7 @@ class ApiModel {
         }
 
         final bean = BaseBean.fromJson(response.data);
-        if (bean.result ?? false) {
+        if (bean.msg == 'success') {
           return APIResponse.success(BaseBean.fromJson(response.data));
         } else {
           return APIResponse.error(
@@ -138,7 +141,7 @@ class ApiModel {
           // await appRouter.replace(LoginRoute());
         }
         return APIResponse.error(
-          AppException.errorWithBean(BaseBean(content: '服务器异常')),
+          AppException.errorWithBean(BaseBean(msg: '服务器异常')),
         );
         // if (response.statusCode! == 400) {
         //   return const APIResponse.error(
@@ -161,15 +164,92 @@ class ApiModel {
         log('------>>> params: ${JsonUtil.encodeObj(body) ?? ''}');
       }
       return APIResponse.error(
-        AppException.errorWithBean(BaseBean(content: formatError(e))),
+        AppException.errorWithBean(BaseBean(msg: formatError(e))),
       );
     } catch (e) {
       if (kDebugMode && AppData.useResponseBodyLog) {
         log('------>>> params: ${JsonUtil.encodeObj(body) ?? ''}');
       }
       return APIResponse.error(
-        AppException.errorWithBean(BaseBean(content: '未知错误')),
+        AppException.errorWithBean(BaseBean(msg: '未知错误')),
       );
+    }
+  }
+
+  Future<String?> getRedirectedUrl(String? url) async {
+    debugPrint('getRedirectedUrl:$url');
+    try {
+      final dio = Dio();
+      await dio.get(
+        url ?? '',
+        options: Options(
+          followRedirects: false, // 禁止自动重定向
+        ),
+      );
+    } catch (e) {
+      return (e as DioError).response?.headers['location']?.first;
+    }
+
+    return null;
+  }
+
+  Future<Response> pureGet(
+    String path, {
+    Map<String, dynamic>? params,
+    ContentType contentType = ContentType.json,
+    CancelToken? cancelToken,
+    bool loginOutWhenTokenOutOfTime = true,
+  }) async {
+    final _response = Response(requestOptions: RequestOptions(path: path));
+
+    final connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult == ConnectivityResult.none) {
+      _response
+        ..statusCode = 500
+        ..data = '网络异常';
+      return _response;
+    }
+
+    var content = 'application/x-www-form-urlencoded';
+
+    if (contentType == ContentType.json) {
+      content = 'application/json; charset=utf-8';
+    }
+
+    final headers = {
+      'accept': '*/*',
+      'Content-Type': content,
+    };
+
+    final _appToken = await _tokenModel.fetchToken();
+    if (_appToken != null) {
+      headers['Authorization'] = 'Bearer ${_appToken.token}';
+    }
+
+    try {
+      final response = await dio.get(
+        path,
+        queryParameters: params,
+        options: Options(validateStatus: (status) => true, headers: headers),
+        cancelToken: cancelToken,
+      );
+      return response;
+    } on DioError catch (e) {
+      if (kDebugMode && AppData.useResponseBodyLog) {
+        log('------>>> params: ${params ?? ''}');
+      }
+      _response
+        ..statusCode = 500
+        ..data = formatError(e);
+      return _response;
+    } catch (e) {
+      if (kDebugMode && AppData.useResponseBodyLog) {
+        log('------>>> params: ${params ?? ''}');
+      }
+      _response
+        ..statusCode = 500
+        ..data = '未知错误';
+      return _response;
     }
   }
 
@@ -185,7 +265,7 @@ class ApiModel {
     final connectivityResult = await Connectivity().checkConnectivity();
     if (connectivityResult == ConnectivityResult.none) {
       return APIResponse.error(
-        AppException.errorWithBean(BaseBean(content: '网络异常')),
+        AppException.errorWithBean(BaseBean(msg: '网络异常')),
       );
     }
     String url;
@@ -221,12 +301,12 @@ class ApiModel {
       );
       if (response == null) {
         return APIResponse.error(
-          AppException.errorWithBean(BaseBean(content: '网络异常')),
+          AppException.errorWithBean(BaseBean(msg: '网络异常')),
         );
       }
       if (response.statusCode == null) {
         return APIResponse.error(
-          AppException.errorWithBean(BaseBean(content: '网络异常')),
+          AppException.errorWithBean(BaseBean(msg: '网络异常')),
         );
       }
 
@@ -236,7 +316,8 @@ class ApiModel {
 
       if (response.statusCode! < 300) {
         final bean = BaseBean.fromJson(response.data);
-        if (bean.result ?? false) {
+        return APIResponse.success(BaseBean.fromJson(response.data));
+        if (bean.msg == 'success') {
           return APIResponse.success(BaseBean.fromJson(response.data));
         } else {
           return APIResponse.error(
@@ -250,7 +331,7 @@ class ApiModel {
           // await appRouter.replace(LoginRoute());
         }
         return APIResponse.error(
-          AppException.errorWithBean(BaseBean(content: '服务器异常')),
+          AppException.errorWithBean(BaseBean(msg: '服务器异常')),
         );
         // if (response.statusCode! == 400) {
         //   return const APIResponse.error(
@@ -273,14 +354,14 @@ class ApiModel {
         log('------>>> params: ${params ?? ''}');
       }
       return APIResponse.error(
-        AppException.errorWithBean(BaseBean(content: formatError(e))),
+        AppException.errorWithBean(BaseBean(msg: formatError(e))),
       );
     } catch (e) {
       if (kDebugMode && AppData.useResponseBodyLog) {
         log('------>>> params: ${params ?? ''}');
       }
       return APIResponse.error(
-        AppException.errorWithBean(BaseBean(content: '未知错误')),
+        AppException.errorWithBean(BaseBean(msg: '未知错误')),
       );
     }
   }
@@ -297,7 +378,7 @@ class ApiModel {
     final connectivityResult = await Connectivity().checkConnectivity();
     if (connectivityResult == ConnectivityResult.none) {
       return APIResponse.error(
-        AppException.errorWithBean(BaseBean(content: '网络异常')),
+        AppException.errorWithBean(BaseBean(msg: '网络异常')),
       );
     }
     String url;
@@ -339,13 +420,13 @@ class ApiModel {
 
       if (response.statusCode == null) {
         return APIResponse.error(
-          AppException.errorWithBean(BaseBean(content: '网络异常')),
+          AppException.errorWithBean(BaseBean(msg: '网络异常')),
         );
       }
 
       if (response.statusCode! < 300) {
         final bean = BaseBean.fromJson(response.data);
-        if (bean.result ?? false) {
+        if (bean.msg == 'success') {
           return APIResponse.success(BaseBean.fromJson(response.data));
         } else {
           return APIResponse.error(
@@ -354,7 +435,7 @@ class ApiModel {
         }
       } else {
         return APIResponse.error(
-          AppException.errorWithBean(BaseBean(content: '服务器异常')),
+          AppException.errorWithBean(BaseBean(msg: '服务器异常')),
         );
       }
     } on DioError catch (e) {
@@ -362,11 +443,11 @@ class ApiModel {
         log('------>>> params: ${params ?? ''}');
       }
       return APIResponse.error(
-        AppException.errorWithBean(BaseBean(content: formatError(e))),
+        AppException.errorWithBean(BaseBean(msg: formatError(e))),
       );
     } catch (e) {
       return APIResponse.error(
-        AppException.errorWithBean(BaseBean(content: '未知错误')),
+        AppException.errorWithBean(BaseBean(msg: '未知错误')),
       );
     }
   }
@@ -382,7 +463,7 @@ class ApiModel {
     final connectivityResult = await Connectivity().checkConnectivity();
     if (connectivityResult == ConnectivityResult.none) {
       return APIResponse.error(
-        AppException.errorWithBean(BaseBean(content: '网络异常')),
+        AppException.errorWithBean(BaseBean(msg: '网络异常')),
       );
     }
     String url;
@@ -420,13 +501,13 @@ class ApiModel {
 
       if (response.statusCode == null) {
         return APIResponse.error(
-          AppException.errorWithBean(BaseBean(content: '网络异常')),
+          AppException.errorWithBean(BaseBean(msg: '网络异常')),
         );
       }
 
       if (response.statusCode! < 300) {
         final bean = BaseBean.fromJson(response.data);
-        if (bean.result ?? false) {
+        if (bean.msg == 'success') {
           return APIResponse.success(BaseBean.fromJson(response.data));
         } else {
           return APIResponse.error(
@@ -435,16 +516,16 @@ class ApiModel {
         }
       } else {
         return APIResponse.error(
-          AppException.errorWithBean(BaseBean(content: '服务器异常')),
+          AppException.errorWithBean(BaseBean(msg: '服务器异常')),
         );
       }
     } on DioError catch (e) {
       return APIResponse.error(
-        AppException.errorWithBean(BaseBean(content: formatError(e))),
+        AppException.errorWithBean(BaseBean(msg: formatError(e))),
       );
     } catch (e) {
       return APIResponse.error(
-        AppException.errorWithBean(BaseBean(content: '未知错误')),
+        AppException.errorWithBean(BaseBean(msg: '未知错误')),
       );
     }
   }

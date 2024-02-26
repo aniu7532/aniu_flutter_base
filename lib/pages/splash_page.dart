@@ -1,16 +1,14 @@
 import 'dart:io';
 
-import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart' as screen_utils;
 import 'package:musico/app/myapp.dart';
+import 'package:musico/base/mixins/api_mixin.dart';
 import 'package:musico/const/app_const.dart';
 import 'package:musico/gen/assets.gen.dart';
 import 'package:musico/gen/colors.gen.dart';
 import 'package:musico/router/router.gr.dart';
-import 'package:musico/utils/store_util.dart';
-import 'package:screen_protector/screen_protector.dart';
 
 ///启动页
 class SplashPage extends StatefulWidget {
@@ -23,7 +21,7 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, ApiMixin {
   late AnimationController controller;
 
   @override
@@ -33,7 +31,7 @@ class _SplashPageState extends State<SplashPage>
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     //更新以及跳转
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await checkUserMode();
+      await loadingPage();
     });
     //进度条控制器
     controller = AnimationController(
@@ -113,20 +111,9 @@ class _SplashPageState extends State<SplashPage>
   //启动时间
   static const splashTime = 2;
 
-  ///资源模式判断
-  Future<void> checkUserMode() async {
-    await ScreenProtector.preventScreenshotOn();
-
-    Future.delayed(const Duration(seconds: splashTime), () async {
-      ///通过判断是否有基础配置 进行页面跳转
-      final configBeanStr = await storeUtil.fetchValue(AppConst.keyConfig);
-      if (ObjectUtil.isEmpty(configBeanStr)) {
-        /// 配置微为空进入配置页面
-        await appRouter.replace(IndexRoute());
-      } else {
-        /// 配置微不为空进入首页
-        await appRouter.replace(IndexRoute());
-      }
-    });
+  ///加载页面
+  Future<void> loadingPage() async {
+    //替换到主页
+    await appRouter.replace(IndexRoute());
   }
 }

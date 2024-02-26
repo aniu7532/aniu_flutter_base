@@ -3,6 +3,7 @@ import 'package:musico/base/base_page.dart';
 import 'package:musico/base/provider_widget.dart';
 import 'package:musico/base/view_state_model.dart';
 import 'package:musico/base/view_state_widget.dart';
+import 'package:musico/gen/colors.gen.dart';
 import 'package:musico/widgets/zz_app_bar.dart';
 import 'package:musico/widgets/zz_scaffold.dart';
 import 'package:musico/widgets/zz_title_widget.dart';
@@ -46,6 +47,7 @@ mixin BasePageMixin<T extends BasePage, M extends ViewStateModel>
         ZzScaffold(
           appBar: buildAppBar() ??
               ZzAppBar(
+                backgroundColor: ColorName.primaryColor,
                 title: buildTitle(),
                 actions: <Widget>[
                   ...getActions(),
@@ -58,6 +60,7 @@ mixin BasePageMixin<T extends BasePage, M extends ViewStateModel>
               buildBottomWidget(),
             ],
           ),
+          floatingActionButton: buildFloatingActionButton(),
         );
   }
 
@@ -136,6 +139,12 @@ mixin BasePageMixin<T extends BasePage, M extends ViewStateModel>
   /// 需要
   Widget? buildHeaderWidget() {
     return null;
+  }
+
+  ///
+  /// 需要
+  Widget? buildFloatingActionButton() {
+    return const SizedBox.shrink();
   }
 
   ///

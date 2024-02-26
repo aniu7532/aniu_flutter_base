@@ -866,4 +866,15 @@ class FSUtils {
     fontSize: 22,
     fontWeight: FontWeight.w600,
   );
+
+  static final functionCardTitleStyle = TextStyle(
+    color: ColorName.primaryColor,
+    fontSize: 32.sp,
+    fontWeight: FontWeight.w800,
+  );
+  static final functionCardDesStyle = TextStyle(
+    color: ColorName.secondaryColor,
+    fontSize: 24.w,
+    fontWeight: FontWeight.w500,
+  );
 }

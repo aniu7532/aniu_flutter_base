@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:musico/gen/colors.gen.dart';
 
 class SeekBar extends StatefulWidget {
   final Duration duration;
@@ -39,38 +40,34 @@ class SeekBarState extends State<SeekBar> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        SliderTheme(
-          data: _sliderThemeData.copyWith(
-            thumbShape: HiddenThumbComponentShape(),
-            activeTrackColor: Colors.blue.shade100,
-            inactiveTrackColor: Colors.grey.shade300,
-          ),
-          child: ExcludeSemantics(
-            child: Slider(
-              min: 0.0,
-              max: widget.duration.inMilliseconds.toDouble(),
-              value: min(widget.bufferedPosition.inMilliseconds.toDouble(),
-                  widget.duration.inMilliseconds.toDouble()),
-              onChanged: (value) {
-                setState(() {
-                  _dragValue = value;
-                });
-                if (widget.onChanged != null) {
-                  widget.onChanged!(Duration(milliseconds: value.round()));
-                }
-              },
-              onChangeEnd: (value) {
-                if (widget.onChangeEnd != null) {
-                  widget.onChangeEnd!(Duration(milliseconds: value.round()));
-                }
-                _dragValue = null;
-              },
-            ),
+        ExcludeSemantics(
+          child: Slider(
+            thumbColor: ColorName.primaryColor,
+            inactiveColor: ColorName.secondaryColor,
+            activeColor: ColorName.primaryColor,
+            min: 0.0,
+            max: widget.duration.inMilliseconds.toDouble(),
+            value: min(widget.bufferedPosition.inMilliseconds.toDouble(),
+                widget.duration.inMilliseconds.toDouble()),
+            onChanged: (value) {
+              setState(() {
+                _dragValue = value;
+              });
+              if (widget.onChanged != null) {
+                widget.onChanged!(Duration(milliseconds: value.round()));
+              }
+            },
+            onChangeEnd: (value) {
+              if (widget.onChangeEnd != null) {
+                widget.onChangeEnd!(Duration(milliseconds: value.round()));
+              }
+              _dragValue = null;
+            },
           ),
         ),
-        SliderTheme(
+        /*   SliderTheme(
           data: _sliderThemeData.copyWith(
-            inactiveTrackColor: Colors.transparent,
+            inactiveTrackColor: ColorName.secondaryColor,
           ),
           child: Slider(
             min: 0.0,
@@ -102,7 +99,7 @@ class SeekBarState extends State<SeekBar> {
                       ?.group(1) ??
                   '$_remaining',
               style: Theme.of(context).textTheme.caption),
-        ),
+        ),*/
       ],
     );
   }

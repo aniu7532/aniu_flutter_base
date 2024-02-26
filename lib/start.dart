@@ -8,13 +8,17 @@ import 'package:flutter_ume_kit_console/flutter_ume_kit_console.dart'; // Show d
 import 'package:flutter_ume_kit_device/flutter_ume_kit_device.dart'; // Device info
 import 'package:flutter_ume_kit_dio/flutter_ume_kit_dio.dart'; // Dio Inspector
 import 'package:flutter_ume_kit_ui/flutter_ume_kit_ui.dart'; // UI kitsCode
+import 'package:hive_flutter/hive_flutter.dart';
+
 import 'package:musico/app/myapp.dart';
 import 'package:musico/const/app_const.dart';
+import 'package:musico/const/app_data.dart';
 import 'package:musico/http/dio_util.dart';
 import 'package:musico/http/http_override.dart';
 import 'package:musico/utils/app_crash_util.dart';
 import 'package:musico/utils/store_util.dart';
 import 'package:musico/utils/strings.dart';
+import 'package:path_provider/path_provider.dart';
 
 void realRunApp(bool needUme) {
   AppCrashChain.capture(
@@ -44,6 +48,16 @@ void realRunApp(bool needUme) {
 Future<void> start() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  ///初始化MMKV
+  // final rootDir = await MMKV.initialize(logLevel: MMKVLogLevel.None);
+  // print('MMKV for flutter with rootDir = $rootDir');
+
+  ///初始化Hive
+  final directory = await getApplicationDocumentsDirectory();
+  AppData.hiveDirectoryPath = directory.path;
+  await Hive.initFlutter(directory.path);
+
+  ///初始化UME
   final openUmeStr = await storeUtil.fetchValue(AppConst.keyUme);
 
   final openUmeBool = openUmeStr?.stringToBool();

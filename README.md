@@ -7,6 +7,3 @@
 # 5: firebase.json
 # 6: key.jks
 
-
-
-

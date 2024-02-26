@@ -39,5 +39,5 @@ extension ApiErrorResponseWrapper on AppException {
     return null;
   }
 
-  String? get errorMessage => message ?? errorBean?.content;
+  String? get errorMessage => message ?? errorBean?.msg;
 }
