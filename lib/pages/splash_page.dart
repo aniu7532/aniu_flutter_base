@@ -52,6 +52,7 @@ class _SplashPageState extends State<SplashPage>
       ),
       minTextAdapt: true, //不允许随系统改变字体大小
     );
+
     return WillPopScope(
       onWillPop: () {
         exit(0);

@@ -110,7 +110,7 @@ class ImageUtils {
       double? placeHolderWidth,
       double? placeHolderHieght,
       BoxFit fit = BoxFit.cover,
-      bool needBaseUrl = true}) {
+      bool needBaseUrl = false}) {
     // url = getImageUrl(url);
     // url = getThumbnailImageUrl(url, width.ceil(), height.ceil());
     if (needBaseUrl) {

@@ -49,7 +49,7 @@ class ZzBackButtonIcon extends StatelessWidget {
       case TargetPlatform.linux:
       case TargetPlatform.macOS:
       case TargetPlatform.windows:
-        return ZzIcons.icon_jiantou;
+        return Icons.arrow_back_ios_new_outlined;
     }
   }
 

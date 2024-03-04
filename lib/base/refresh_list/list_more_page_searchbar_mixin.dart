@@ -205,6 +205,7 @@ mixin ListMoreSearchPageStateMixin<T extends BasePage,
             actions: <Widget>[
               ...getActions(),
             ],
+            backgroundColor: ColorName.primaryColor,
           );
   }
 

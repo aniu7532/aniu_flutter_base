@@ -25,7 +25,7 @@ class ZzAppBar extends AppBar {
     toolbarHeight,
     leadingWidth,
     toolbarTextStyle,
-    titleTextStyle,
+    titleTextStyle = const TextStyle(color: Colors.red),
     systemOverlayStyle,
   }) : super(
           key: key,
@@ -53,5 +53,6 @@ class ZzAppBar extends AppBar {
           toolbarTextStyle: toolbarTextStyle,
           titleTextStyle: titleTextStyle,
           systemOverlayStyle: systemOverlayStyle,
+          backwardsCompatibility: false,
         );
 }

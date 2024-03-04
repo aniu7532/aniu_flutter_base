@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:musico/pages/functions/fun_ai/function_ai.dart';
 import 'package:musico/pages/functions/fun_random_music/function_random_music.dart';
+import 'package:musico/pages/functions/fun_random_picture/function_random_picture_page.dart';
 import 'package:musico/pages/functions/fun_random_video/function_random_video_page.dart';
 import 'package:musico/pages/home/setting/scan/scan_page.dart';
 import 'package:musico/pages/home/setting/tab_setting_page.dart';
@@ -76,7 +77,15 @@ class AppRouteObserver extends AutoRouterObserver {
 
     ///RandomVideo
     AutoRoute(
-        path: 'function_random_video_page', page: FunctionRandomVideoPage),
+      path: 'function_random_video_page',
+      page: FunctionRandomVideoPage,
+    ),
+
+    ///RandomPicture
+    AutoRoute(
+      path: 'function_random_picture_page',
+      page: FunctionRandomPicturePage,
+    ),
   ],
 )
 class $AppRouter {}

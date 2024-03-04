@@ -13,19 +13,26 @@ class IndexModel extends ViewStateModel {
     FunctionInfoBean(
       gUID: '0',
       title: 'Ai',
-      description: '',
+      description: '免费ai聊天',
       url: '',
       iconUrl: 'https://cdn.free-api.com/ak0t8-xbicc.webp',
     ),
     FunctionInfoBean(
       gUID: '1',
+      title: '随机图片',
+      description: '随机壁纸、美女图片、宠物图片',
+      url: 'https://api.uomg.com/api/rand.music',
+      iconUrl: 'https://cdn.free-api.com/a2541-851n9.webp',
+    ),
+    FunctionInfoBean(
+      gUID: '2',
       title: '随机音乐',
-      description: '随机音乐',
+      description: '随机播放网易云音乐热榜歌曲',
       url: 'https://api.uomg.com/api/rand.music',
       iconUrl: 'https://cdn.free-api.com/wyysjyy.webp',
     ),
     FunctionInfoBean(
-      gUID: '2',
+      gUID: '3',
       title: '随机视频',
       description: '热门视频榜及搞笑、体育、汽车、美食达人视频榜单',
       url: 'https://api.uomg.com/api/rand.music',
@@ -44,13 +51,19 @@ class IndexModel extends ViewStateModel {
 
     switch (functionInfoBean.gUID) {
       case '0': //ai
-        page = FunctionAiRoute();
+        page = FunctionAiRoute(requestParams: const {'title': 'Ai'});
         break;
-      case '1': //audio
-        page = FunctionRandomMusicRoute();
+      case '1': //picture
+        page = FunctionRandomPictureRoute(
+            requestParams: const {'title': 'Picture'});
         break;
-      case '2': //video
-        page = FunctionRandomVideoRoute();
+      case '2': //audio
+        page =
+            FunctionRandomMusicRoute(requestParams: const {'title': 'Music'});
+        break;
+      case '3': //video
+        page =
+            FunctionRandomVideoRoute(requestParams: const {'title': 'Video'});
         break;
     }
     appRouter.push(page);

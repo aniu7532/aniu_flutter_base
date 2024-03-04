@@ -11,12 +11,14 @@
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i11;
-import 'package:flutter/foundation.dart' as _i13;
-import 'package:flutter/material.dart' as _i12;
+import 'package:auto_route/auto_route.dart' as _i12;
+import 'package:flutter/foundation.dart' as _i14;
+import 'package:flutter/material.dart' as _i13;
 
 import '../pages/functions/fun_ai/function_ai.dart' as _i8;
 import '../pages/functions/fun_random_music/function_random_music.dart' as _i9;
+import '../pages/functions/fun_random_picture/function_random_picture_page.dart'
+    as _i11;
 import '../pages/functions/fun_random_video/function_random_video_page.dart'
     as _i10;
 import '../pages/home/setting/scan/scan_page.dart' as _i4;
@@ -27,17 +29,17 @@ import '../pages/splash_page.dart' as _i1;
 import '../widgets/file_select/image_preview_page.dart' as _i6;
 import '../widgets/file_select/video_preview_page.dart' as _i5;
 
-class AppRouter extends _i11.RootStackRouter {
-  AppRouter([_i12.GlobalKey<_i12.NavigatorState>? navigatorKey])
+class AppRouter extends _i12.RootStackRouter {
+  AppRouter([_i13.GlobalKey<_i13.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
-  final Map<String, _i11.PageFactory> pagesMap = {
+  final Map<String, _i12.PageFactory> pagesMap = {
     SplashRoute.name: (routeData) {
-      return _i11.CustomPage<dynamic>(
+      return _i12.CustomPage<dynamic>(
         routeData: routeData,
         child: const _i1.SplashPage(),
-        transitionsBuilder: _i11.TransitionsBuilders.slideLeft,
+        transitionsBuilder: _i12.TransitionsBuilders.slideLeft,
         durationInMilliseconds: 200,
         opaque: true,
         barrierDismissible: false,
@@ -46,13 +48,13 @@ class AppRouter extends _i11.RootStackRouter {
     TabSettingRoute.name: (routeData) {
       final args = routeData.argsAs<TabSettingRouteArgs>(
           orElse: () => const TabSettingRouteArgs());
-      return _i11.CustomPage<dynamic>(
+      return _i12.CustomPage<dynamic>(
         routeData: routeData,
         child: _i2.TabSettingPage(
           key: args.key,
           requestParams: args.requestParams,
         ),
-        transitionsBuilder: _i11.TransitionsBuilders.slideLeft,
+        transitionsBuilder: _i12.TransitionsBuilders.slideLeft,
         durationInMilliseconds: 200,
         opaque: true,
         barrierDismissible: false,
@@ -61,13 +63,13 @@ class AppRouter extends _i11.RootStackRouter {
     IndexRoute.name: (routeData) {
       final args = routeData.argsAs<IndexRouteArgs>(
           orElse: () => const IndexRouteArgs());
-      return _i11.CustomPage<dynamic>(
+      return _i12.CustomPage<dynamic>(
         routeData: routeData,
         child: _i3.IndexPage(
           key: args.key,
           requestParams: args.requestParams,
         ),
-        transitionsBuilder: _i11.TransitionsBuilders.slideLeft,
+        transitionsBuilder: _i12.TransitionsBuilders.slideLeft,
         durationInMilliseconds: 200,
         opaque: true,
         barrierDismissible: false,
@@ -76,13 +78,13 @@ class AppRouter extends _i11.RootStackRouter {
     ScanRoute.name: (routeData) {
       final args =
           routeData.argsAs<ScanRouteArgs>(orElse: () => const ScanRouteArgs());
-      return _i11.CustomPage<dynamic>(
+      return _i12.CustomPage<dynamic>(
         routeData: routeData,
         child: _i4.ScanPage(
           key: args.key,
           requestParams: args.requestParams,
         ),
-        transitionsBuilder: _i11.TransitionsBuilders.slideLeft,
+        transitionsBuilder: _i12.TransitionsBuilders.slideLeft,
         durationInMilliseconds: 200,
         opaque: true,
         barrierDismissible: false,
@@ -90,14 +92,14 @@ class AppRouter extends _i11.RootStackRouter {
     },
     VideoPreviewRoute.name: (routeData) {
       final args = routeData.argsAs<VideoPreviewRouteArgs>();
-      return _i11.CustomPage<dynamic>(
+      return _i12.CustomPage<dynamic>(
         routeData: routeData,
         child: _i5.VideoPreviewPage(
           key: args.key,
           url: args.url,
           autoPlay: args.autoPlay,
         ),
-        transitionsBuilder: _i11.TransitionsBuilders.slideLeft,
+        transitionsBuilder: _i12.TransitionsBuilders.slideLeft,
         durationInMilliseconds: 200,
         opaque: true,
         barrierDismissible: false,
@@ -105,7 +107,7 @@ class AppRouter extends _i11.RootStackRouter {
     },
     ImagePreViewRoute.name: (routeData) {
       final args = routeData.argsAs<ImagePreViewRouteArgs>();
-      return _i11.CustomPage<dynamic>(
+      return _i12.CustomPage<dynamic>(
         routeData: routeData,
         child: _i6.ImagePreViewPage(
           key: args.key,
@@ -114,17 +116,17 @@ class AppRouter extends _i11.RootStackRouter {
           backgroundDecoration: args.backgroundDecoration,
           scrollDirection: args.scrollDirection,
         ),
-        transitionsBuilder: _i11.TransitionsBuilders.slideLeft,
+        transitionsBuilder: _i12.TransitionsBuilders.slideLeft,
         durationInMilliseconds: 200,
         opaque: true,
         barrierDismissible: false,
       );
     },
     QrcodeRoute.name: (routeData) {
-      return _i11.CustomPage<dynamic>(
+      return _i12.CustomPage<dynamic>(
         routeData: routeData,
         child: const _i7.QrcodePage(),
-        transitionsBuilder: _i11.TransitionsBuilders.slideLeft,
+        transitionsBuilder: _i12.TransitionsBuilders.slideLeft,
         durationInMilliseconds: 200,
         opaque: true,
         barrierDismissible: false,
@@ -133,13 +135,13 @@ class AppRouter extends _i11.RootStackRouter {
     FunctionAiRoute.name: (routeData) {
       final args = routeData.argsAs<FunctionAiRouteArgs>(
           orElse: () => const FunctionAiRouteArgs());
-      return _i11.CustomPage<dynamic>(
+      return _i12.CustomPage<dynamic>(
         routeData: routeData,
         child: _i8.FunctionAiPage(
           key: args.key,
           requestParams: args.requestParams,
         ),
-        transitionsBuilder: _i11.TransitionsBuilders.slideLeft,
+        transitionsBuilder: _i12.TransitionsBuilders.slideLeft,
         durationInMilliseconds: 200,
         opaque: true,
         barrierDismissible: false,
@@ -148,13 +150,13 @@ class AppRouter extends _i11.RootStackRouter {
     FunctionRandomMusicRoute.name: (routeData) {
       final args = routeData.argsAs<FunctionRandomMusicRouteArgs>(
           orElse: () => const FunctionRandomMusicRouteArgs());
-      return _i11.CustomPage<dynamic>(
+      return _i12.CustomPage<dynamic>(
         routeData: routeData,
         child: _i9.FunctionRandomMusicPage(
           key: args.key,
           requestParams: args.requestParams,
         ),
-        transitionsBuilder: _i11.TransitionsBuilders.slideLeft,
+        transitionsBuilder: _i12.TransitionsBuilders.slideLeft,
         durationInMilliseconds: 200,
         opaque: true,
         barrierDismissible: false,
@@ -163,13 +165,28 @@ class AppRouter extends _i11.RootStackRouter {
     FunctionRandomVideoRoute.name: (routeData) {
       final args = routeData.argsAs<FunctionRandomVideoRouteArgs>(
           orElse: () => const FunctionRandomVideoRouteArgs());
-      return _i11.CustomPage<dynamic>(
+      return _i12.CustomPage<dynamic>(
         routeData: routeData,
         child: _i10.FunctionRandomVideoPage(
           key: args.key,
           requestParams: args.requestParams,
         ),
-        transitionsBuilder: _i11.TransitionsBuilders.slideLeft,
+        transitionsBuilder: _i12.TransitionsBuilders.slideLeft,
+        durationInMilliseconds: 200,
+        opaque: true,
+        barrierDismissible: false,
+      );
+    },
+    FunctionRandomPictureRoute.name: (routeData) {
+      final args = routeData.argsAs<FunctionRandomPictureRouteArgs>(
+          orElse: () => const FunctionRandomPictureRouteArgs());
+      return _i12.CustomPage<dynamic>(
+        routeData: routeData,
+        child: _i11.FunctionRandomPicturePage(
+          key: args.key,
+          requestParams: args.requestParams,
+        ),
+        transitionsBuilder: _i12.TransitionsBuilders.slideLeft,
         durationInMilliseconds: 200,
         opaque: true,
         barrierDismissible: false,
@@ -178,53 +195,57 @@ class AppRouter extends _i11.RootStackRouter {
   };
 
   @override
-  List<_i11.RouteConfig> get routes => [
-        _i11.RouteConfig(
+  List<_i12.RouteConfig> get routes => [
+        _i12.RouteConfig(
           SplashRoute.name,
           path: '/',
         ),
-        _i11.RouteConfig(
+        _i12.RouteConfig(
           TabSettingRoute.name,
           path: 'tab_setting_page',
         ),
-        _i11.RouteConfig(
+        _i12.RouteConfig(
           IndexRoute.name,
           path: 'index_page',
         ),
-        _i11.RouteConfig(
+        _i12.RouteConfig(
           ScanRoute.name,
           path: 'scan_page',
         ),
-        _i11.RouteConfig(
+        _i12.RouteConfig(
           VideoPreviewRoute.name,
           path: 'video_preview_page',
         ),
-        _i11.RouteConfig(
+        _i12.RouteConfig(
           ImagePreViewRoute.name,
           path: 'image_preView_page',
         ),
-        _i11.RouteConfig(
+        _i12.RouteConfig(
           QrcodeRoute.name,
           path: 'qrcode_page',
         ),
-        _i11.RouteConfig(
+        _i12.RouteConfig(
           FunctionAiRoute.name,
           path: 'function_ai',
         ),
-        _i11.RouteConfig(
+        _i12.RouteConfig(
           FunctionRandomMusicRoute.name,
           path: 'function_random_music',
         ),
-        _i11.RouteConfig(
+        _i12.RouteConfig(
           FunctionRandomVideoRoute.name,
           path: 'function_random_video_page',
+        ),
+        _i12.RouteConfig(
+          FunctionRandomPictureRoute.name,
+          path: 'function_random_picture_page',
         ),
       ];
 }
 
 /// generated route for
 /// [_i1.SplashPage]
-class SplashRoute extends _i11.PageRouteInfo<void> {
+class SplashRoute extends _i12.PageRouteInfo<void> {
   const SplashRoute()
       : super(
           SplashRoute.name,
@@ -236,9 +257,9 @@ class SplashRoute extends _i11.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.TabSettingPage]
-class TabSettingRoute extends _i11.PageRouteInfo<TabSettingRouteArgs> {
+class TabSettingRoute extends _i12.PageRouteInfo<TabSettingRouteArgs> {
   TabSettingRoute({
-    _i13.Key? key,
+    _i14.Key? key,
     Map<String, dynamic>? requestParams,
   }) : super(
           TabSettingRoute.name,
@@ -258,7 +279,7 @@ class TabSettingRouteArgs {
     this.requestParams,
   });
 
-  final _i13.Key? key;
+  final _i14.Key? key;
 
   final Map<String, dynamic>? requestParams;
 
@@ -270,9 +291,9 @@ class TabSettingRouteArgs {
 
 /// generated route for
 /// [_i3.IndexPage]
-class IndexRoute extends _i11.PageRouteInfo<IndexRouteArgs> {
+class IndexRoute extends _i12.PageRouteInfo<IndexRouteArgs> {
   IndexRoute({
-    _i13.Key? key,
+    _i14.Key? key,
     Map<String, dynamic>? requestParams,
   }) : super(
           IndexRoute.name,
@@ -292,7 +313,7 @@ class IndexRouteArgs {
     this.requestParams,
   });
 
-  final _i13.Key? key;
+  final _i14.Key? key;
 
   final Map<String, dynamic>? requestParams;
 
@@ -304,9 +325,9 @@ class IndexRouteArgs {
 
 /// generated route for
 /// [_i4.ScanPage]
-class ScanRoute extends _i11.PageRouteInfo<ScanRouteArgs> {
+class ScanRoute extends _i12.PageRouteInfo<ScanRouteArgs> {
   ScanRoute({
-    _i13.Key? key,
+    _i14.Key? key,
     Map<String, dynamic>? requestParams,
   }) : super(
           ScanRoute.name,
@@ -326,7 +347,7 @@ class ScanRouteArgs {
     this.requestParams,
   });
 
-  final _i13.Key? key;
+  final _i14.Key? key;
 
   final Map<String, dynamic>? requestParams;
 
@@ -338,9 +359,9 @@ class ScanRouteArgs {
 
 /// generated route for
 /// [_i5.VideoPreviewPage]
-class VideoPreviewRoute extends _i11.PageRouteInfo<VideoPreviewRouteArgs> {
+class VideoPreviewRoute extends _i12.PageRouteInfo<VideoPreviewRouteArgs> {
   VideoPreviewRoute({
-    _i13.Key? key,
+    _i14.Key? key,
     required String url,
     bool autoPlay = false,
   }) : super(
@@ -363,7 +384,7 @@ class VideoPreviewRouteArgs {
     this.autoPlay = false,
   });
 
-  final _i13.Key? key;
+  final _i14.Key? key;
 
   final String url;
 
@@ -377,13 +398,13 @@ class VideoPreviewRouteArgs {
 
 /// generated route for
 /// [_i6.ImagePreViewPage]
-class ImagePreViewRoute extends _i11.PageRouteInfo<ImagePreViewRouteArgs> {
+class ImagePreViewRoute extends _i12.PageRouteInfo<ImagePreViewRouteArgs> {
   ImagePreViewRoute({
-    _i13.Key? key,
+    _i14.Key? key,
     int initialIndex = 0,
     required List<String> galleryItems,
-    _i12.Decoration? backgroundDecoration,
-    _i12.Axis scrollDirection = _i12.Axis.horizontal,
+    _i13.Decoration? backgroundDecoration,
+    _i13.Axis scrollDirection = _i13.Axis.horizontal,
   }) : super(
           ImagePreViewRoute.name,
           path: 'image_preView_page',
@@ -405,18 +426,18 @@ class ImagePreViewRouteArgs {
     this.initialIndex = 0,
     required this.galleryItems,
     this.backgroundDecoration,
-    this.scrollDirection = _i12.Axis.horizontal,
+    this.scrollDirection = _i13.Axis.horizontal,
   });
 
-  final _i13.Key? key;
+  final _i14.Key? key;
 
   final int initialIndex;
 
   final List<String> galleryItems;
 
-  final _i12.Decoration? backgroundDecoration;
+  final _i13.Decoration? backgroundDecoration;
 
-  final _i12.Axis scrollDirection;
+  final _i13.Axis scrollDirection;
 
   @override
   String toString() {
@@ -426,7 +447,7 @@ class ImagePreViewRouteArgs {
 
 /// generated route for
 /// [_i7.QrcodePage]
-class QrcodeRoute extends _i11.PageRouteInfo<void> {
+class QrcodeRoute extends _i12.PageRouteInfo<void> {
   const QrcodeRoute()
       : super(
           QrcodeRoute.name,
@@ -438,9 +459,9 @@ class QrcodeRoute extends _i11.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i8.FunctionAiPage]
-class FunctionAiRoute extends _i11.PageRouteInfo<FunctionAiRouteArgs> {
+class FunctionAiRoute extends _i12.PageRouteInfo<FunctionAiRouteArgs> {
   FunctionAiRoute({
-    _i13.Key? key,
+    _i14.Key? key,
     Map<String, dynamic>? requestParams,
   }) : super(
           FunctionAiRoute.name,
@@ -460,7 +481,7 @@ class FunctionAiRouteArgs {
     this.requestParams,
   });
 
-  final _i13.Key? key;
+  final _i14.Key? key;
 
   final Map<String, dynamic>? requestParams;
 
@@ -473,9 +494,9 @@ class FunctionAiRouteArgs {
 /// generated route for
 /// [_i9.FunctionRandomMusicPage]
 class FunctionRandomMusicRoute
-    extends _i11.PageRouteInfo<FunctionRandomMusicRouteArgs> {
+    extends _i12.PageRouteInfo<FunctionRandomMusicRouteArgs> {
   FunctionRandomMusicRoute({
-    _i13.Key? key,
+    _i14.Key? key,
     Map<String, dynamic>? requestParams,
   }) : super(
           FunctionRandomMusicRoute.name,
@@ -495,7 +516,7 @@ class FunctionRandomMusicRouteArgs {
     this.requestParams,
   });
 
-  final _i13.Key? key;
+  final _i14.Key? key;
 
   final Map<String, dynamic>? requestParams;
 
@@ -508,9 +529,9 @@ class FunctionRandomMusicRouteArgs {
 /// generated route for
 /// [_i10.FunctionRandomVideoPage]
 class FunctionRandomVideoRoute
-    extends _i11.PageRouteInfo<FunctionRandomVideoRouteArgs> {
+    extends _i12.PageRouteInfo<FunctionRandomVideoRouteArgs> {
   FunctionRandomVideoRoute({
-    _i13.Key? key,
+    _i14.Key? key,
     Map<String, dynamic>? requestParams,
   }) : super(
           FunctionRandomVideoRoute.name,
@@ -530,12 +551,47 @@ class FunctionRandomVideoRouteArgs {
     this.requestParams,
   });
 
-  final _i13.Key? key;
+  final _i14.Key? key;
 
   final Map<String, dynamic>? requestParams;
 
   @override
   String toString() {
     return 'FunctionRandomVideoRouteArgs{key: $key, requestParams: $requestParams}';
+  }
+}
+
+/// generated route for
+/// [_i11.FunctionRandomPicturePage]
+class FunctionRandomPictureRoute
+    extends _i12.PageRouteInfo<FunctionRandomPictureRouteArgs> {
+  FunctionRandomPictureRoute({
+    _i14.Key? key,
+    Map<String, dynamic>? requestParams,
+  }) : super(
+          FunctionRandomPictureRoute.name,
+          path: 'function_random_picture_page',
+          args: FunctionRandomPictureRouteArgs(
+            key: key,
+            requestParams: requestParams,
+          ),
+        );
+
+  static const String name = 'FunctionRandomPictureRoute';
+}
+
+class FunctionRandomPictureRouteArgs {
+  const FunctionRandomPictureRouteArgs({
+    this.key,
+    this.requestParams,
+  });
+
+  final _i14.Key? key;
+
+  final Map<String, dynamic>? requestParams;
+
+  @override
+  String toString() {
+    return 'FunctionRandomPictureRouteArgs{key: $key, requestParams: $requestParams}';
   }
 }

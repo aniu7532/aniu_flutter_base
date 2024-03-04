@@ -68,6 +68,22 @@ class $AssetsImagesGen {
   AssetGenImage get indexBg =>
       const AssetGenImage('assets/images/index_bg.png');
 
+  /// File path: assets/images/menu_cat.png
+  AssetGenImage get menuCat =>
+      const AssetGenImage('assets/images/menu_cat.png');
+
+  /// File path: assets/images/menu_dog.png
+  AssetGenImage get menuDog =>
+      const AssetGenImage('assets/images/menu_dog.png');
+
+  /// File path: assets/images/menu_girl.png
+  AssetGenImage get menuGirl =>
+      const AssetGenImage('assets/images/menu_girl.png');
+
+  /// File path: assets/images/menu_view.png
+  AssetGenImage get menuView =>
+      const AssetGenImage('assets/images/menu_view.png');
+
   $AssetsImagesNoDataGen get noData => const $AssetsImagesNoDataGen();
 
   /// File path: assets/images/password_icon.png
@@ -103,6 +119,10 @@ class $AssetsImagesGen {
         hosIcon,
         imgUpgrade,
         indexBg,
+        menuCat,
+        menuDog,
+        menuGirl,
+        menuView,
         passwordIcon,
         patientBg,
         splashBg,
