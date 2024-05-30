@@ -50,11 +50,71 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  /// `title`
-  String get title {
+  /// `scenery`
+  String get scenery {
     return Intl.message(
-      'title',
-      name: 'title',
+      'scenery',
+      name: 'scenery',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `cat`
+  String get cat {
+    return Intl.message(
+      'cat',
+      name: 'cat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `dog`
+  String get dog {
+    return Intl.message(
+      'dog',
+      name: 'dog',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `astronomy`
+  String get astronomy {
+    return Intl.message(
+      'astronomy',
+      name: 'astronomy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `car`
+  String get car {
+    return Intl.message(
+      'car',
+      name: 'car',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `leg`
+  String get leg {
+    return Intl.message(
+      'leg',
+      name: 'leg',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Acg`
+  String get acg {
+    return Intl.message(
+      'Acg',
+      name: 'acg',
       desc: '',
       args: [],
     );
@@ -67,6 +127,8 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'cn'),
+      Locale.fromSubtags(languageCode: 'zh', countryCode: 'CN'),
     ];
   }
 

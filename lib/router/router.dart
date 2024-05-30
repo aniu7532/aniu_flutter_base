@@ -2,9 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:musico/pages/functions/fun_ai/function_ai.dart';
+import 'package:musico/pages/functions/fun_ble/function_ble_page.dart';
 import 'package:musico/pages/functions/fun_random_music/function_random_music.dart';
 import 'package:musico/pages/functions/fun_random_picture/function_random_picture_page.dart';
 import 'package:musico/pages/functions/fun_random_video/function_random_video_page.dart';
+import 'package:musico/pages/functions/fun_test_hwkj/function_test_hwkj_page.dart';
 import 'package:musico/pages/home/setting/scan/scan_page.dart';
 import 'package:musico/pages/home/setting/tab_setting_page.dart';
 import 'package:musico/pages/index/index_page.dart';
@@ -45,7 +47,7 @@ class AppRouteObserver extends AutoRouterObserver {
 @CustomAutoRouter(
   replaceInRouteName: 'Page,Route',
   durationInMilliseconds: 200,
-  transitionsBuilder: TransitionsBuilders.slideLeft,
+  transitionsBuilder: TransitionsBuilders.noTransition,
   routes: <AutoRoute>[
     ///启动页
     AutoRoute(initial: true, page: SplashPage),
@@ -85,6 +87,18 @@ class AppRouteObserver extends AutoRouterObserver {
     AutoRoute(
       path: 'function_random_picture_page',
       page: FunctionRandomPicturePage,
+    ),
+
+    ///Ble
+    AutoRoute(
+      path: 'function_ble_page',
+      page: FunctionBlePage,
+    ),
+
+    ///Hwkj
+    AutoRoute(
+      path: 'function_test_hwkj_page',
+      page: FunctionTestHwkjPage,
     ),
   ],
 )

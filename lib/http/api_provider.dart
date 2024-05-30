@@ -198,9 +198,12 @@ class ApiModel {
     Map<String, dynamic>? params,
     ContentType contentType = ContentType.json,
     CancelToken? cancelToken,
+    ResponseType responseType = ResponseType.json,
     bool loginOutWhenTokenOutOfTime = true,
   }) async {
-    final _response = Response(requestOptions: RequestOptions(path: path));
+    final _response = Response(
+        requestOptions:
+            RequestOptions(path: path, responseType: ResponseType.plain));
 
     final connectivityResult = await Connectivity().checkConnectivity();
     if (connectivityResult == ConnectivityResult.none) {
@@ -230,9 +233,20 @@ class ApiModel {
       final response = await dio.get(
         path,
         queryParameters: params,
-        options: Options(validateStatus: (status) => true, headers: headers),
+        options: Options(
+          responseType: responseType,
+          validateStatus: (status) => true,
+          headers: headers,
+        ),
         cancelToken: cancelToken,
       );
+
+      if (responseType == ResponseType.bytes) {
+        final responseBody = utf8.decoder.convert(response.data);
+        response.data = json.decode(responseBody);
+      }
+
+      debugPrint('------>>> response: ${json.encode(response.data) ?? ''}');
       return response;
     } on DioError catch (e) {
       if (kDebugMode && AppData.useResponseBodyLog) {

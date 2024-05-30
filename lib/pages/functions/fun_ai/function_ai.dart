@@ -8,6 +8,8 @@ import 'package:musico/gen/colors.gen.dart';
 import 'package:musico/pages/functions/fun_ai/function_ai_model.dart';
 import 'package:musico/pages/functions/fun_ai/widget/chat_bubble.dart';
 
+enum ChatMsgType { send, receive }
+
 /// Ai功能模块
 class FunctionAiPage extends BasePage {
   FunctionAiPage({Key? key, Map<String, dynamic>? requestParams})
@@ -27,45 +29,52 @@ class _FunctionAiPageState extends BasePageState<FunctionAiPage>
   @override
   Widget getItemWidget(item, index) {
     return ChatBubble(
-      send: item['type'] == 1,
-      title: item['type'] == 1 ? null : json.decode(item['msg'])['question'],
-      text: item['type'] == 1 ? item['msg'] : json.decode(item['msg'])['reply'],
+      send: item['type'] == ChatMsgType.send.index,
+      title: item['type'] == ChatMsgType.send.index
+          ? null
+          : json.decode(item['msg'])['question'],
+      text: item['type'] == ChatMsgType.send.index
+          ? item['msg']
+          : json.decode(item['msg'])['reply'],
     );
   }
 
   @override
   Widget buildFooter() {
-    return Container(
-      color: ColorName.primaryColor,
-      child: Row(
-        children: [
-          Expanded(
-              child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: TextField(
-              controller: model.controller,
-              decoration: InputDecoration(border: InputBorder.none),
-              cursorColor: ColorName.secondaryColor,
-            ),
-          )),
-          IconButton(
-            onPressed: () {
-              if (ObjectUtil.isEmptyString(model.controller.text)) {
-                return;
-              }
-              model.sendMsg(model.controller.text);
-            },
-            icon: const Icon(
-              Icons.send,
-              color: Colors.white,
-            ),
-          )
-        ],
+    return Hero(
+      tag: widget.requestParams?['guid'],
+      child: Container(
+        color: ColorName.primaryColor,
+        child: Row(
+          children: [
+            Expanded(
+                child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: TextField(
+                controller: model.controller,
+                decoration: InputDecoration(border: InputBorder.none),
+                cursorColor: ColorName.secondaryColor,
+              ),
+            )),
+            IconButton(
+              onPressed: () {
+                if (ObjectUtil.isEmptyString(model.controller.text)) {
+                  return;
+                }
+                model.sendMsg(model.controller.text);
+              },
+              icon: const Icon(
+                Icons.send,
+                color: Colors.white,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

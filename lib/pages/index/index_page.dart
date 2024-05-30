@@ -4,10 +4,13 @@ import 'package:musico/base/base_page.dart';
 import 'package:musico/base/base_page_mixin.dart';
 import 'package:musico/const/app_const.dart';
 import 'package:musico/gen/colors.gen.dart';
+import 'package:musico/pages/functions/fun_ai/function_ai.dart';
 import 'package:musico/pages/index/bean/tab_info_bean.dart';
 import 'package:musico/pages/index/idnex_model.dart';
+import 'package:musico/pages/index/widget/search_app_bar.dart';
 import 'package:musico/utils/font_style_utils.dart';
 import 'package:musico/utils/image_utils.dart';
+import 'package:musico/widgets/search_textfield_widget.dart';
 
 ///
 /// 首页
@@ -36,6 +39,16 @@ class _IndexPageState extends BasePageState<IndexPage>
   }
 
   @override
+  Widget? buildAppBar() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: SearchAppbar(
+        onSearchTextChanged: model.searching,
+      ),
+    );
+  }
+
+  @override
   bool get wantKeepAlive => true;
 
   @override
@@ -61,9 +74,9 @@ class _IndexPageState extends BasePageState<IndexPage>
         crossAxisSpacing: 36.w,
       ),
       itemBuilder: (c, i) {
-        return _buildFunctionItem(model.functionData[i]);
+        return _buildFunctionItem(model.mapList[i]);
       },
-      itemCount: model.functionData.length,
+      itemCount: model.mapList.length,
       padding: EdgeInsets.all(42.w),
     );
   }
@@ -81,44 +94,47 @@ class _IndexPageState extends BasePageState<IndexPage>
         context,
       ),
       borderRadius: BorderRadius.circular(16.w), //按压时背景圆角
-      child: Card(
-        shadowColor: ColorName.secondaryColor, // 阴影颜色
-        elevation: 10, // 阴影高度
-        borderOnForeground: false, // 是否在 child 前绘制 border，默认为 true
-        // 边框
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(50.w),
-          side: const BorderSide(
-            color: ColorName.primaryColor,
-            width: 8,
+      child: Hero(
+        tag: functionInfoBean.gUID ?? '',
+        child: Card(
+          shadowColor: ColorName.secondaryColor, // 阴影颜色
+          elevation: 10, // 阴影高度
+          borderOnForeground: false, // 是否在 child 前绘制 border，默认为 true
+          // 边框
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50.w),
+            side: const BorderSide(
+              color: ColorName.primaryColor,
+              width: 8,
+            ),
           ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ImageUtils.loadImage(
-              functionInfoBean.iconUrl ?? '',
-              width: 80.w,
-              height: 80.w,
-            ),
-            SizedBox(
-              height: 12.h,
-            ),
-            Text(
-              functionInfoBean.title ?? '',
-              style: FSUtils.functionCardTitleStyle,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width / 2 - 100,
-              child: Text(
-                functionInfoBean.description ?? '',
-                style: TextStyle(fontSize: 34.sp),
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ImageUtils.loadImage(
+                functionInfoBean.iconUrl ?? '',
+                width: 80.w,
+                height: 80.w,
               ),
-            ),
-          ],
+              SizedBox(
+                height: 12.h,
+              ),
+              Text(
+                functionInfoBean.title ?? '',
+                style: FSUtils.functionCardTitleStyle,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 2 - 100,
+                child: Text(
+                  functionInfoBean.description ?? '',
+                  style: TextStyle(fontSize: 34.sp),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

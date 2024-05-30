@@ -30,73 +30,78 @@ class _FunctionRandomMusicPageState
 
   @override
   Widget buildContentWidget() {
-    return Stack(
-      children: [
-        ImageUtils.loadImage(
-          model.musicInfoBean?.picurl ?? '',
-          width: double.infinity,
-          height: double.infinity,
-        ),
-        BackdropFilter(
-          filter: ImageFilter.blur(
-            sigmaX: 15,
-            sigmaY: 15,
-            tileMode: TileMode.repeated,
+    return Hero(
+      tag: widget.requestParams?['guid'],
+      child: Stack(
+        children: [
+          ImageUtils.loadImage(
+            model.musicInfoBean?.picurl ?? '',
+            width: double.infinity,
+            height: double.infinity,
           ),
-          child: Container(
-            color: Colors.black.withOpacity(0.3),
-          ),
-        ),
-        StreamBuilder(
-          stream: model.player.onDurationChanged,
-          builder: (c, total) {
-            if (total != null && total.hasData) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ImageUtils.loadImageWithRadius(
-                          model.musicInfoBean?.picurl ?? '',
-                          width: 300,
-                          height: 280,
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
+/*          BackdropFilter(
+            filter: ImageFilter.blur(
+              sigmaX: 0,
+              sigmaY: 0,
+              tileMode: TileMode.repeated,
+            ),
+            child: Container(
+              color: Colors.black.withOpacity(0.0),
+            ),
+          ),*/
+          StreamBuilder(
+            stream: model.player.onDurationChanged,
+            builder: (c, total) {
+              if (total != null && total.hasData) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      color: ColorName.black.withOpacity(0.3),
+                      elevation: 1,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          /*            ImageUtils.loadImageWithRadius(
+                            model.musicInfoBean?.picurl ?? '',
+                            width: 100,
+                            height: 140,
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20),
+                            ),
+                          ),*/
+                          const SizedBox(
+                            height: 8,
                           ),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                            '${model.musicInfoBean?.name ?? '未知'} - ${model.musicInfoBean?.artistsname ?? '未知'}'),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                      ],
+                          Text(
+                            '${model.musicInfoBean?.name ?? '未知'} - ${model.musicInfoBean?.artistsname ?? '未知'}',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          SizedBox(
+                            child: MusicSeek(
+                              player: model.player,
+                              duration: total.data ?? Duration.zero,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 100, vertical: 16),
-                    child: MusicSeek(
-                      player: model.player,
-                      duration: total.data ?? Duration.zero,
-                    ),
-                  ),
-                ],
-              );
-            }
+                  ],
+                );
+              }
 
-            return const SizedBox.shrink();
-          },
-        ),
-      ],
+              return const SizedBox.shrink();
+            },
+          ),
+        ],
+      ),
     );
 
     /*  return Column(
@@ -146,13 +151,16 @@ class _FunctionRandomMusicPageState
 
   @override
   Widget? buildFloatingActionButton() {
-    return FloatingActionButton(
-      onPressed: () {
-        model.initData();
-      },
-      child: const Icon(
-        Icons.change_circle_outlined,
-        color: Colors.white,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 70),
+      child: FloatingActionButton(
+        onPressed: () {
+          model.initData();
+        },
+        child: const Icon(
+          Icons.change_circle_outlined,
+          color: Colors.white,
+        ),
       ),
     );
   }

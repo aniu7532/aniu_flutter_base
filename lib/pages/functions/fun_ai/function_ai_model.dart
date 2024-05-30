@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hive/hive.dart';
 import 'package:musico/base/refresh_list/list_more_page_searchbar_mixin.dart';
 import 'package:musico/http/app_exception.dart';
+import 'package:musico/pages/functions/fun_ai/function_ai.dart';
 
 mixin _Protocol {}
 
@@ -29,14 +31,16 @@ class FunctionAiModel extends BaseListMoreModel<dynamic> with _Protocol {
     return getMsgFromBox();
   }
 
+  final db = FirebaseFirestore.instance;
+
   ///发送消息
   Future<void> sendMsg(String msg) async {
     final loading = await EasyLoading.show();
 
-    await putMsgInBox(msg, 1);
-
     //1、发出请求
     try {
+      await putMsgInBox(msg, ChatMsgType.send);
+
       final apiResponse = await get(
         'https://api.a20safe.com/api.php',
         params: {
@@ -48,24 +52,28 @@ class FunctionAiModel extends BaseListMoreModel<dynamic> with _Protocol {
 
       await apiResponse.map(
         success: (success) async {
-          debugPrint('success:${json.encode(success.value.data[0])}');
+          final aiAnswer = success.value.data[0];
+
+          debugPrint('success:${json.encode(aiAnswer)}');
 
           //2、插入数据库
-          await putMsgInBox(json.encode(success.value.data[0]), 2);
+          await putMsgInBox(json.encode(aiAnswer), ChatMsgType.receive);
         },
         error: (error) async {
           //2、插入数据库
-          await putMsgInBox(error.exception.errorBean?.msg ?? '', 2);
+          await putMsgInBox(
+              error.exception.errorBean?.msg ?? '', ChatMsgType.receive);
         },
       );
     } on Exception catch (e) {
+      await EasyLoading.dismiss();
       debugPrint('e:${e.toString()}');
     } finally {
       //3、刷新列表
       await initData();
       debugPrint('list.length:${list.length - 1}');
       scrollController
-          ?.jumpTo((scrollController?.position.maxScrollExtent ?? 0) + 150);
+          ?.jumpTo((scrollController?.position.maxScrollExtent ?? 0));
       controller.clear();
       await EasyLoading.dismiss();
     }
@@ -90,62 +98,24 @@ class FunctionAiModel extends BaseListMoreModel<dynamic> with _Protocol {
   }
 
   ///向box存信息
-  Future<void> putMsgInBox(String msg, int type) async {
+  Future<void> putMsgInBox(String msg, ChatMsgType type) async {
     debugPrint('putMsgInBoxStart: type:$type|msg:$msg');
 
     final box = await getChatBox();
 
-    await box.add({'type': type, 'msg': msg});
+    final msgMap = {'type': type.index, 'msg': msg};
+
+    await box.add(msgMap);
+
+    //存到fb
+    await db.collection('AiChatList').add(msgMap).then(
+          (DocumentReference doc) =>
+              print('aiAnswers added with ID: ${doc.id}'),
+        );
   }
 
   ///获取box实例
   Future<Box> getChatBox() async {
     return Hive.openBox('AiChatList');
-
-    /*  await Hive.openBox('AiChatList');
-    
-    // Create a box collection
-    final collection = await BoxCollection.open(
-      'AiChatList', // Name of your database
-      {'chat'}, // Names of your boxes
-      path: AppData
-          .hiveDirectoryPath, // Path where to store your boxes (Only used in Flutter / Dart IO)
-      key: HiveAesCipher([
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-      ]), // Key to encrypt your boxes (Only used in Flutter / Dart IO)
-    );
-
-    return collection.openBox<Map>('chat');*/
   }
 }

@@ -1,9 +1,15 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:musico/const/app_common.dart';
 import 'package:musico/gen/assets.gen.dart';
+import 'package:musico/gen/colors.gen.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:musico/utils/toast_util.dart';
 
 class ImageUtils {
   ///加载网络图片
@@ -104,28 +110,36 @@ class ImageUtils {
   }
 
   ///加载网络图片
-  static Widget loadMaxImage(String url,
-      {double? width,
-      double? height,
-      double? placeHolderWidth,
-      double? placeHolderHieght,
-      BoxFit fit = BoxFit.cover,
-      bool needBaseUrl = false}) {
+  static Widget loadMaxImage(
+    String url, {
+    double? width,
+    double? height,
+    double? placeHolderWidth,
+    double? placeHolderHieght,
+    BoxFit fit = BoxFit.cover,
+    bool needBaseUrl = false,
+    bool needSave = false,
+    BuildContext? context,
+  }) {
     // url = getImageUrl(url);
     // url = getThumbnailImageUrl(url, width.ceil(), height.ceil());
     if (needBaseUrl) {
       if (ObjectUtil.isEmpty(url.isEmpty) || !isImageByPath(url)) {
         return Assets.images.noData.defaultNoTrack.image(
-            width: width ?? placeHolderWidth,
-            height: height ?? placeHolderHieght,
-            fit: fit);
+          width: width ?? placeHolderWidth,
+          height: height ?? placeHolderHieght,
+          fit: fit,
+        );
       }
     }
+
     final imageUrl = needBaseUrl ? '${appCommon.baseOssUrl}$url' : url;
-    return CachedNetworkImage(
+
+    final imageWidget = CachedNetworkImage(
       imageUrl: imageUrl,
       width: width,
       height: height,
+      cacheManager: DefaultCacheManager(),
       //错误图
       errorWidget: (BuildContext context, String url, error) {
         return Assets.images.noData.defaultNoTrack.image(
@@ -146,6 +160,131 @@ class ImageUtils {
         );
       },
       fit: fit,
+    );
+
+    return InkWell(
+      onLongPress: !needSave
+          ? null
+          : () async {
+              await showDialog(
+                context: context!,
+                builder: (BuildContext context) {
+                  var saving = false;
+                  const duration = 200;
+                  return StatefulBuilder(
+                    builder: (context, setState) {
+                      return AlertDialog(
+                        title: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: duration),
+                          child: saving
+                              ? const Text(
+                                  '保存中...',
+                                  key: Key('saving'),
+                                  style:
+                                      TextStyle(color: ColorName.primaryColor),
+                                )
+                              : const Text(
+                                  '保存图片',
+                                  key: Key('not_saving'),
+                                  style:
+                                      TextStyle(color: ColorName.primaryColor),
+                                ),
+                        ),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            AnimatedSwitcher(
+                              duration: const Duration(milliseconds: duration),
+                              child: saving
+                                  ? const CircularProgressIndicator(
+                                      key: Key('progress'),
+                                      color: ColorName.primaryColor,
+                                      strokeWidth: 3,
+                                    )
+                                  : const Text(
+                                      '您确定要保存这张图片吗?',
+                                      key: Key('content'),
+                                      style: TextStyle(
+                                          color: ColorName.primaryColor),
+                                    ),
+                            ),
+                          ],
+                        ),
+                        actions: [
+                          AnimatedSwitcher(
+                              duration: const Duration(milliseconds: duration),
+                              child: saving
+                                  ? const SizedBox.shrink(
+                                      key: Key('cancelSizebox'),
+                                    )
+                                  : TextButton(
+                                      key: const Key('cancel'),
+                                      onPressed: () {
+                                        // 取消保存操作
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text(
+                                        '取消',
+                                        style: TextStyle(
+                                            color: ColorName.secondaryColor),
+                                      ),
+                                    )),
+                          AnimatedSwitcher(
+                            duration: const Duration(milliseconds: duration),
+                            child: saving
+                                ? const SizedBox.shrink(
+                                    key: Key('sureSizebox'),
+                                  )
+                                : TextButton(
+                                    key: const Key('sure'),
+                                    onPressed: () {
+                                      // 取消保存操作
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: TextButton(
+                                      onPressed: () async {
+                                        setState(() {
+                                          saving = true; // 显示进度圈
+                                        });
+
+                                        final cacheManager =
+                                            imageWidget.cacheManager;
+                                        final file =
+                                            await cacheManager?.getSingleFile(
+                                                imageWidget.imageUrl);
+                                        final imageBytes =
+                                            await file?.readAsBytes();
+                                        if (imageBytes != null) {
+                                          final rst =
+                                              await ImageGallerySaver.saveImage(
+                                                  imageBytes);
+                                          if (rst != null &&
+                                              rst is Map &&
+                                              rst['isSuccess']) {
+                                            MyToast.showToast(
+                                                '保存成功：${rst['filePath']}');
+                                            Navigator.of(context)
+                                                .pop(); // 保存成功后关闭对话框
+                                          }
+                                        }
+                                      },
+                                      child: const Text(
+                                        '确定',
+                                        style: TextStyle(
+                                          color: ColorName.primaryColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              );
+            },
+      child: imageWidget,
     );
   }
 

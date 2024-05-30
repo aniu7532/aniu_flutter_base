@@ -1,18 +1,17 @@
 import 'package:flustars/flustars.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:musico/base/base_page.dart';
 import 'package:musico/base/base_page_mixin.dart';
 import 'package:musico/gen/assets.gen.dart';
 import 'package:musico/gen/colors.gen.dart';
+import 'package:musico/generated/l10n.dart';
 import 'package:musico/pages/functions/fun_random_picture/function_random_picture_model.dart';
-import 'package:musico/pages/functions/fun_random_video/function_random_video_model.dart';
+import 'package:musico/widgets/text/animated_text.dart';
 import 'package:musico/utils/image_utils.dart';
 import 'package:musico/widgets/my_expansion.dart';
-import 'package:video_player/video_player.dart';
+import 'package:photo_view/photo_view.dart';
 
-/// video功能模块
+/// picture功能模块
 class FunctionRandomPicturePage extends BasePage {
   FunctionRandomPicturePage({Key? key, Map<String, dynamic>? requestParams})
       : super(key: key, requestParams: requestParams) {}
@@ -32,12 +31,15 @@ class _FunctionRandomMusicPageState
 
   @override
   Widget buildContentWidget() {
-    return Center(
-      child: Column(
-        children: [
-          Expanded(child: _buildPictureLauncher()),
-          buildClassify(),
-        ],
+    return Hero(
+      tag: widget.requestParams?['guid'],
+      child: Center(
+        child: Column(
+          children: [
+            Expanded(child: _buildPictureLauncher()),
+            buildClassify(),
+          ],
+        ),
       ),
     );
   }
@@ -53,15 +55,55 @@ class _FunctionRandomMusicPageState
       onPressed: () {
         model.initData();
       },
-      child: const Icon(
-        Icons.change_circle_outlined,
-        color: Colors.white,
+      child: Container(
+        height: double.infinity,
+        width: double.infinity,
+        decoration: const BoxDecoration(
+            color: ColorName.primaryColor, shape: BoxShape.circle),
+        child: const Icon(
+          Icons.change_circle_outlined,
+          color: Colors.white,
+        ),
       ),
     );
   }
 
   Widget _buildPictureLauncher() {
-    return ImageUtils.loadMaxImage(model.imageUrl);
+    return Stack(
+      fit: StackFit.expand,
+      alignment: AlignmentDirectional.bottomCenter,
+      children: [
+        if (model.classify == 5)
+          PhotoView(
+            imageProvider: NetworkImage(model.imageUrl),
+          )
+        else
+          ImageUtils.loadMaxImage(
+            model.imageUrl,
+            needSave: true,
+            context: context,
+          ),
+        Positioned(
+          left: 20,
+          right: 20,
+          bottom: 20,
+          child: Visibility(
+            visible: !ObjectUtil.isEmptyString(model.description),
+            child: Container(
+              decoration: BoxDecoration(
+                color: ColorName.primaryColor.withOpacity(0.4),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: const EdgeInsets.all(10),
+              child: MarqueeText(
+                text: model.description,
+                style: const TextStyle(fontSize: 18, color: Colors.white),
+              ),
+            ),
+          ),
+        )
+      ],
+    );
   }
 
   Widget buildClassify() {
@@ -102,9 +144,9 @@ class _FunctionRandomMusicPageState
           ),
         ),
         RadioListTile(
-          title: const Text(
-            'cat',
-            style: TextStyle(color: ColorName.primaryColor),
+          title: Text(
+            S.of(context).cat,
+            style: const TextStyle(color: ColorName.primaryColor),
           ),
           activeColor: ColorName.primaryColor,
           value: model.classify,
@@ -122,9 +164,9 @@ class _FunctionRandomMusicPageState
           ),
         ),
         RadioListTile(
-          title: const Text(
-            'dog',
-            style: TextStyle(color: ColorName.primaryColor),
+          title: Text(
+            S.of(context).dog,
+            style: const TextStyle(color: ColorName.primaryColor),
           ),
           secondary: Padding(
             padding: const EdgeInsets.only(right: 80),
@@ -142,9 +184,9 @@ class _FunctionRandomMusicPageState
           },
         ),
         RadioListTile(
-          title: const Text(
-            'girl',
-            style: TextStyle(color: ColorName.primaryColor),
+          title: Text(
+            S.of(context).astronomy,
+            style: const TextStyle(color: ColorName.primaryColor),
           ),
           secondary: Padding(
             padding: const EdgeInsets.only(right: 80),
@@ -156,9 +198,49 @@ class _FunctionRandomMusicPageState
           activeColor: ColorName.primaryColor,
           value: model.classify,
           selected: model.classify == 3,
-          groupValue: 2,
+          groupValue: 3,
           onChanged: (v) {
             model.setClassify(3);
+          },
+        ),
+        RadioListTile(
+          title: Text(
+            S.of(context).car,
+            style: const TextStyle(color: ColorName.primaryColor),
+          ),
+          secondary: Padding(
+            padding: const EdgeInsets.only(right: 80),
+            child: CircleAvatar(
+              backgroundColor: ColorName.primaryColor,
+              child: Assets.images.menuGirl.image(color: Colors.white),
+            ),
+          ),
+          activeColor: ColorName.primaryColor,
+          value: model.classify,
+          selected: model.classify == 4,
+          groupValue: 4,
+          onChanged: (v) {
+            model.setClassify(4);
+          },
+        ),
+        RadioListTile(
+          title: Text(
+            S.of(context).leg,
+            style: const TextStyle(color: ColorName.primaryColor),
+          ),
+          secondary: Padding(
+            padding: const EdgeInsets.only(right: 80),
+            child: CircleAvatar(
+              backgroundColor: ColorName.primaryColor,
+              child: Assets.images.menuGirl.image(color: Colors.white),
+            ),
+          ),
+          activeColor: ColorName.primaryColor,
+          value: model.classify,
+          selected: model.classify == 5,
+          groupValue: 5,
+          onChanged: (v) {
+            model.setClassify(5);
           },
         ),
       ],

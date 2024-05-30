@@ -1,10 +1,13 @@
 buildscript {
     apply from: 'config.gradle'
+
     addRepos(repositories)
 
     dependencies {
         classpath "com.android.tools.build:gradle:7.1.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21"
+        classpath 'com.google.gms:google-services:4.3.10'
+
     }
 }
 
@@ -20,6 +23,8 @@ subprojects {
     project.evaluationDependsOn(':app')
 }
 
-task clean(type: Delete) {
+tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
+apply plugin: 'com.google.gms.google-services' // 添加此行
+

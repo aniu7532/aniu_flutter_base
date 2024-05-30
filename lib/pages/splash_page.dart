@@ -109,6 +109,12 @@ class _SplashPageState extends State<SplashPage>
     );
   }
 
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   //启动时间
   static const splashTime = 2;
 

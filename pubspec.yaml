@@ -4,13 +4,50 @@ description: A new Flutter project.
 version: 0.0.1+1
 
 environment:
-  sdk: ">=2.18.0 <4.0.0"
+  sdk: '>=2.18.0 <4.0.0'
+  flutter: '>=3.3.0'
 
 dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+
+  basecore:
+    git:
+      url:  http://hwkj.webok.net:1080/rmis/hwkj.framework.mobile.git
+      path: Flutter/Module/basecore
+      ref: 3.7.7
+  log:
+    git:
+      url:  http://hwkj.webok.net:1080/rmis/hwkj.framework.mobile.git
+      path: Flutter/Module/log
+      ref: 3.7.7
+
+  network:
+    git:
+      url:  http://hwkj.webok.net:1080/rmis/hwkj.framework.mobile.git
+      path: Flutter/Module/network
+      ref: 3.7.7
+
+  download_file:
+    git:
+      url:  http://hwkj.webok.net:1080/rmis/hwkj.framework.mobile.git
+      path: Flutter/Module/download_file
+      ref: 3.7.7
+
+  upload_file:
+    git:
+      url:  http://hwkj.webok.net:1080/rmis/hwkj.framework.mobile.git
+      path: Flutter/Module/upload_file
+      ref: 3.7.7
+
+  browsemedia:
+    git:
+      url:  http://hwkj.webok.net:1080/rmis/hwkj.framework.mobile.git
+      path: Flutter/Plugin/browsemedia
+      ref: 3.7.7
+
   rxdart: 0.27.7
   # 状态管理
   provider: 6.0.2
@@ -19,7 +56,7 @@ dependencies:
   # 网络请求
   dio: 4.0.6
   #https://pub.dev/packages/crypto
-  crypto: 3.0.3
+  crypto: 3.0.2
   # 网络请求日志
   pretty_dio_logger: 1.2.0-beta-1
   connectivity_plus: 2.2.0
@@ -30,7 +67,7 @@ dependencies:
   # flutter_secure_storage: 7.0.1
   # 存储
   # mmkv: ^1.3.0
-  shared_preferences: 2.2.1
+  shared_preferences: 2.2.0
   # 相机
   camera: ^0.10.5+4
   # 视频播放
@@ -39,8 +76,13 @@ dependencies:
   audioplayers: 4.1.0
   # 语音播报
   flutter_tts: 3.8.2
+  # ble 蓝牙
+  flutter_blue_plus: ^1.31.17
+  flutter_reactive_ble: ^5.3.1
   #禁止截屏录屏
   screen_protector: ^1.4.1
+  #图片保存
+  image_gallery_saver: ^2.0.3
   # 图片缓存
   cached_network_image: 3.2.1
   #图片选择  需要适配ios https://github.com/fluttercandies/flutter_wechat_assets_picker/blob/main/README-ZH.md
@@ -58,11 +100,6 @@ dependencies:
   #普通日志打印
   logger: 1.1.0
   #UME https://github.com/bytedance/flutter_ume/blob/master/README_cn.md
-  flutter_ume: 1.1.2
-  flutter_ume_kit_ui: 1.1.0
-  flutter_ume_kit_device: 1.0.0
-  flutter_ume_kit_console: 1.0.0
-  flutter_ume_kit_dio: 1.0.1+2
   # 弹窗
   flutter_easyloading: 3.0.3
   #列表刷新加载
@@ -80,11 +117,13 @@ dependencies:
   #设备信息 https://pub.flutter-io.cn/packages/device_info
   device_info: 2.0.3
   #权限请求  https://pub.flutter-io.cn/packages/permission_handler
-  permission_handler: 9.2.0
+  permission_handler: 9.0.2
   #加载第三方网页
   webview_flutter: 4.0.1
   #扫描二维码
   qr_code_scanner: ^1.0.1
+  #扫描二维码 dart 版本
+  qr_code_dart_scan: 0.7.3
   path_provider: ^2.0.11
   open_file: 3.3.2
   #下拉框 https://pub-web.flutter-io.cn/packages/cool_dropdown/example
@@ -92,11 +131,13 @@ dependencies:
   # 生成实体数据
   freezed_annotation: 2.2.0
   json_annotation: 4.6.0
-
+  # firebase
+  firebase_core: 2.24.0
+  cloud_firestore: 4.13.2
 
 dependency_overrides:
   decimal: 1.5.0
-
+  intl: 0.18.0
 
 dev_dependencies:
   flutter_test:

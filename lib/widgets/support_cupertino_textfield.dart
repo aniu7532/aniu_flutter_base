@@ -94,32 +94,6 @@ class _CupertinoTextFieldSelectionGestureDetectorBuilder
         super(delegate: state);
 
   final _SupportCupertinoTextFieldState _state;
-
-  @override
-  void onSingleTapUp(TapUpDetails details) {
-    editableText.hideToolbar();
-    // Because TextSelectionGestureDetector listens to taps that happen on
-    // widgets in front of it, tapping the clear button will also trigger
-    // this handler. If the clear button widget recognizes the up event,
-    // then do not handle it.
-    if (_state._clearGlobalKey.currentContext != null) {
-      final RenderBox renderBox = _state._clearGlobalKey.currentContext!
-          .findRenderObject()! as RenderBox;
-      final Offset localOffset =
-          renderBox.globalToLocal(details.globalPosition);
-      if (renderBox.hitTest(BoxHitTestResult(), position: localOffset)) {
-        return;
-      }
-    }
-    super.onSingleTapUp(details);
-    _state._requestKeyboard();
-    _state.widget.onTap?.call();
-  }
-
-  @override
-  void onDragSelectionEnd(DragEndDetails details) {
-    _state._requestKeyboard();
-  }
 }
 
 ///  修改官方的[CupertinoTextField]

@@ -25,15 +25,15 @@ class MyApp extends StatelessWidget {
       primarySwatch: Colors.red,
       // 3.primaryColor: 单独设置导航和TabBar的颜色，会覆盖primarySwatch
       primaryColor: ColorName.primaryColor,
-      // 4.accentColor: 单独设置FloatingActionButton、Switch的颜色
-      accentColor: ColorName.primaryColor,
       // 5.Button的主题
-/*        buttonTheme: const ButtonThemeData(
-          // 默认是88x36
-          height: 25,
-          minWidth: 10,
-          buttonColor: ColorName.secondaryColor,
-        ),*/
+      buttonTheme: const ButtonThemeData(
+        // 默认是88x36
+        height: 25,
+        minWidth: 10,
+        buttonColor: ColorName.secondaryColor,
+      ),
+      // 4.获取焦点后的颜色
+      focusColor: ColorName.primaryColor,
       // 6.Card的主题
       cardTheme: const CardTheme(
         // 背景颜色
@@ -64,7 +64,6 @@ class MyApp extends StatelessWidget {
       // 全局主题
       theme: theme,
       darkTheme: theme,
-
       debugShowCheckedModeBanner: dotenv.get('IS_PRODUCTION') == '0',
       routeInformationParser: appRouter.defaultRouteParser(),
       routeInformationProvider: appRouter.routeInfoProvider(),
@@ -78,7 +77,7 @@ class MyApp extends StatelessWidget {
         },
       ),
       //默认显示英文
-      locale: const Locale('en'),
+      // locale: const Locale(),
       localizationsDelegates: const [
         RefreshLocalizations.delegate,
         S.delegate,

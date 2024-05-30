@@ -9,7 +9,7 @@ import 'package:video_player/video_player.dart';
 /// video功能模块
 class FunctionRandomVideoPage extends BasePage {
   FunctionRandomVideoPage({Key? key, Map<String, dynamic>? requestParams})
-      : super(key: key, requestParams: requestParams) {}
+      : super(key: key, requestParams: requestParams);
 
   @override
   State<FunctionRandomVideoPage> createState() =>
@@ -33,10 +33,13 @@ class _FunctionRandomMusicPageState
         child: CupertinoActivityIndicator(),
       );
     } else {
-      return Center(
-        child: model.videoController.value.isInitialized
-            ? _buildVideoPlayer()
-            : const CupertinoActivityIndicator(),
+      return Hero(
+        tag: widget.requestParams?['guid'],
+        child: Center(
+          child: model.videoController.value.isInitialized
+              ? _buildVideoPlayer()
+              : const CupertinoActivityIndicator(),
+        ),
       );
     }
   }

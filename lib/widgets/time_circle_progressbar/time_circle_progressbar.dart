@@ -6,6 +6,9 @@ import 'package:musico/base/provider_widget.dart';
 import 'package:musico/gen/colors.gen.dart';
 import 'package:musico/widgets/time_circle_progressbar/time_circle_model.dart';
 
+///
+/// 圆圈倒计时进度条
+///
 class TimeCircleProgressbar extends StatefulWidget {
   TimeCircleProgressbar({
     super.key,

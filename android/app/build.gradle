@@ -2,6 +2,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.gms.google-services'
 }
 
 def localProperties = new Properties()
@@ -49,7 +50,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.testlisten.free1"
+        applicationId "com.aniu.flutter.aniu_base"
         minSdk build_versions.min_sdk
         targetSdk build_versions.target_sdk
         versionCode flutterVersionCode.toInteger()
@@ -134,6 +135,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${build_versions.kotlin}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${build_versions.kotlin}")
     implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.firebase:firebase-storage:20.3.0'
+    implementation("com.cdhwkj.android:basecore:9.0.1")
     configurations.all { resolutionStrategy { force "org.jetbrains.kotlin:kotlin-stdlib:${build_versions.kotlin}" } }
     configurations.all { resolutionStrategy { force "org.jetbrains.kotlin:kotlin-stdlib-common:${build_versions.kotlin}" } }
 

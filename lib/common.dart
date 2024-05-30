@@ -42,13 +42,16 @@ class SeekBarState extends State<SeekBar> {
       children: [
         ExcludeSemantics(
           child: Slider(
-            thumbColor: ColorName.primaryColor,
+            thumbColor: ColorName.secondaryColor,
             inactiveColor: ColorName.secondaryColor,
             activeColor: ColorName.primaryColor,
+            secondaryActiveColor: ColorName.bgColor,
             min: 0.0,
             max: widget.duration.inMilliseconds.toDouble(),
-            value: min(widget.bufferedPosition.inMilliseconds.toDouble(),
-                widget.duration.inMilliseconds.toDouble()),
+            value: min(
+              widget.bufferedPosition.inMilliseconds.toDouble(),
+              widget.duration.inMilliseconds.toDouble(),
+            ),
             onChanged: (value) {
               setState(() {
                 _dragValue = value;

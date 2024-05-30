@@ -46,7 +46,7 @@ class FunctionRandomMusicModel extends ViewStateModel {
         debugPrint('getRedirectedUrl:$url');
 
         ///处理重定向失败
-        if ((url ?? '').contains('404')) {
+        if ((url ?? '').contains('/404')) {
           await initData();
         } else {
           await player.play(UrlSource(url ?? ''));

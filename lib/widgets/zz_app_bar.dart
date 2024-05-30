@@ -53,6 +53,5 @@ class ZzAppBar extends AppBar {
           toolbarTextStyle: toolbarTextStyle,
           titleTextStyle: titleTextStyle,
           systemOverlayStyle: systemOverlayStyle,
-          backwardsCompatibility: false,
         );
 }

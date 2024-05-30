@@ -161,9 +161,9 @@ Widget buildInputWidget(
   String hintText,
   int maxLength,
   ValueChanged<String> onChanged, {
-  autofocus: false,
+  autofocus = false,
   TextInputType? inputType,
-  BuildContext? context = null,
+  BuildContext? context,
   bool hideNumberTips = true,
   List<TextInputFormatter>? inputFormatters,
 }) {
@@ -253,7 +253,7 @@ Widget buildVerticalInputWidget(
   ValueChanged<String> onChanged, {
   bool applyToGoodsPicBack = false,
   bool showCheck = false,
-  autofocus: false,
+  autofocus = false,
   TextInputType? inputType,
   BuildContext? context = null,
   bool hideNumberTips = true,
